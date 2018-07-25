@@ -1,0 +1,45 @@
+{
+    "edit": 
+        {
+            "model": {
+                "regex": {
+                  "pattern": "/^[a-zA-Z0-9\\-\\_\\s]+$/",
+                  "text":"Wybrane pole może zawierać tylko litery oraz liczby z wyjątkiem znaków '-', '_' i może mieć postać paru wyrazów"
+                }
+            },
+            "mark": {
+                "regex": {
+                  "pattern": "/^[\\s]*[a-zA-Z\\-\\_]+$/",
+                  "text":"Wybrane pole może zawierać tylko litery oraz musi mieć postać jednego wyrazu"
+                }
+            },
+            "price": {
+                "regex": {
+                  "pattern": "/^[\\s]*[0-9]+$/",
+                  "text":"Wybrane pole może zawierać tylko liczby",
+                  "smaller":true
+                }
+            },
+            "power": {
+                "regex": {
+                  "pattern": "/^[\\s]*[0-9]+$/",
+                  "text":"Wybrane pole może zawierać tylko liczby",
+                  "smaller":true
+                }
+            },
+            "avatar": {
+                "image": {
+                  "group": false,
+                  "mime-type":"image/jpeg",
+                  "mime-type-key":"JPG/JPEG"
+                }
+            },
+            "image": {
+                "image": {
+                  "group": true,
+                  "mime-type":"image/jpeg",
+                  "mime-type-key":"JPG/JPEG"
+                }
+            }
+        }
+}

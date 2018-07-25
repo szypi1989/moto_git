@@ -1,0 +1,147 @@
+{% trans_default_domain 'FOSUserBundle' %}
+{% extends 'layout.html.twig' %}
+{% block contents %}
+    
+  <div id="register_cont" class="col-sm-12" style="width:min-content; float:center; padding:20px;">
+      {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+<div class="input-group">
+<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+    {{ form_widget(form.username,{'attr' : {'class' : 'form-inline','placeholder':'nazwa użytkownika' } }) }}
+    <div class="alert alert-danger errorvalidate error_username" {% if err_validate.username is defined  %}style="display:block;"{% endif %}>
+       {% if err_validate.username is defined  %}
+           {% for key, value in err_validate.username %}
+            <li>{{value}}</li>   
+           {% endfor %}
+       {% endif %}
+    </div>
+</div>
+ <div class="input-group">
+<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+    {{ form_widget(form.plainPassword,{'attr' : {'class' : 'form-inline','placeholder':'hasło' } }) }}
+ <div class="alert alert-danger errorvalidate error_password" {% if err_validate.plainPassword_first is defined  %}style="display:block;"{% endif %}>
+       {% if err_validate.plainPassword_first is defined  %}
+           {% for key, value in err_validate.plainPassword_first %}
+            <li>{{value}}</li>   
+           {% endfor %}
+       {% endif %}
+    </div>
+ </div> 
+ <div class="input-group">
+<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+    {{ form_widget(form.email,{'attr' : {'class' : 'form-inline','placeholder':'adres email' } }) }}
+ <div class="alert alert-danger errorvalidate error_email" {% if err_validate.email is defined  %}style="display:block;"{% endif %}>
+       {% if err_validate.email is defined  %}
+           {% for key, value in err_validate.email %}
+            <li>{{value}}</li>   
+           {% endfor %}
+       {% endif %}
+    </div>
+ </div> 
+ <div class="input-group">
+<input type="submit" value="{{ 'registration.submit'|trans }}" style="float:right;"/>
+</div> 
+  </div>
+   {{ form_end(form) }}
+{% endblock %}
+
+ {% block stylesheets %}
+    <style type="text/css">
+           {{ parent() }}
+        {% if err_validate is defined  %}
+                   {% for key, value in err_validate %}
+                    input#fos_user_registration_form_{{key}}{
+                             border-style:solid; border-width:2px; border-color:red;          
+                    }  
+                   {% endfor %}
+        {% endif %}
+    </style>
+
+        {% endblock %}
+        {% block javascripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#register_cont").find("input#fos_user_registration_form_username").keyup(function() {
+        var name_element=$(this).attr("id");
+        value= $("#register_cont").find("#"+ name_element).val();
+        isset_login(value);
+            if(value.length==0 || validateSpace(value)){
+            SecurityTemplateErrors(false,'username','Wybrane pole nie może byś puste',"#register_cont");
+            return;
+            } 
+        valueReg = /^[a-zA-Z]+[a-zA-Z0-9\-\_\s]*$/;
+        var result=valueReg.test(value);
+        SecurityTemplateErrors(result,'username','Wybrane pole może zawierać tylko litery oraz liczby z wyjątkiem znaków "-", "_" i musi mieć postać jednego wyrazu.\n\
+        Wybrane pole musi zaczynać się od liter',"#register_cont");
+    })
+     $("#register_cont").find("input#fos_user_registration_form_email").keyup(function() {
+        var name_element=$(this).attr("id");
+        value= $("#register_cont").find("#"+ name_element).val();
+        isset_email(value);
+            if(value.length==0 || validateSpace(value)){
+            SecurityTemplateErrors(false,'email','Wybrane pole nie może byś puste',"#register_cont");
+            return;
+            } 
+        valueReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        var result=valueReg.test(value);
+        SecurityTemplateErrors(result,'email','Wybrane pole musi być formatem adresu email',"#register_cont");
+    })
+     $("#register_cont").find("input#fos_user_registration_form_plainPassword_first").keyup(function() {
+        var name_element=$(this).attr("id");
+        valueA = $("#register_cont").find("#"+ name_element).val();
+        valueB = $("#register_cont").find("input#fos_user_registration_form_plainPassword_second").val();     
+            if(valueA!=valueB){
+            SecurityTemplateErrors(false,'password','hasła nie są takie same',"#register_cont");      
+            }else{
+            SecurityTemplateErrors(true,'password','hasła nie są takie same',"#register_cont");      
+            }
+    })
+    $("#register_cont").find("input#fos_user_registration_form_plainPassword_second").keyup(function() {
+        var name_element=$(this).attr("id");
+        valueA = $("#register_cont").find("#"+ name_element).val();
+        valueB = $("#register_cont").find("input#fos_user_registration_form_plainPassword_first").val();
+            if(valueA!=valueB){
+            SecurityTemplateErrors(false,'password','hasła nie są takie same',"#register_cont");      
+            }else{
+            SecurityTemplateErrors(true,'password','hasła nie są takie same',"#register_cont");     
+            }
+    })
+    function SecurityTemplateErrors(value,element,text,cont) {
+        if(value){
+        $(cont).find('input#fos_user_registration_form_' + element).css("border-style","inset"); 
+        $(cont).find('input#fos_user_registration_form_' + element).css("border-width","1px");
+        $(cont).find('input#fos_user_registration_form_' + element).css("border-color","#000"); 
+        $(cont).find('.error_' + element).html('');
+        $(cont).find('.error_' + element).css("display","none")    
+        }else{
+        $(cont).find('input#fos_user_registration_form_' + element).css("border-style","solid"); 
+        $(cont).find('input#fos_user_registration_form_' + element).css("border-width","2px");
+        $(cont).find('input#fos_user_registration_form_' + element).css("border-color","red"); 
+        $(cont).find('.error_' + element).css("display","block")
+        $(cont).find('.error_' + element).html(text);    
+        }
+    return value;
+    }
+    function isset_login(value){
+        
+    $.getJSON("{{asset('ajax/issetlogin/')}}" + encodeURIComponent(value),function(data){
+        console.log(data[0]["id"]);
+        if(data[0]["id"]){
+        SecurityTemplateErrors(false,'username','Login o tej nazwie już istnieje w bazie danych',"#register_cont");    
+        }
+    });  
+    }
+    function isset_email(value){
+      $.getJSON("{{asset('ajax/issetemail/')}}" + encodeURIComponent(value),function(data){
+        if(data[0]["id"]){
+        SecurityTemplateErrors(false,'email','email o tej nazwie już istnieje w bazie danych',"#register_cont");    
+        }
+    });  
+    }
+    function validateSpace(value) {
+        var valueReg = /^[\s]+$/;
+        return valueReg.test( value);
+    }
+});
+ 
+</script>
+{% endblock %}

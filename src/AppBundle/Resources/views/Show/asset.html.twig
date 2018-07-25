@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+{% block title %}
+
+{% endblock %}
+{% block form_errors %}
+{% spaceless %}
+{% for child in form.model %}
+{% if child.vars.errors|length > 0 %}
+{% for error in child.vars.errors %}
+{{ error.message }}
+
+
+{% endfor %}
+{% endif %}
+{% if child.model|length >0 %}
+{{ form_errors(child) }}
+{% endif %}
+{% endfor %}
+{% endspaceless %}
+{% endblock %}
+{% block contents %}
+       
+    asdfe
+     {{ form_start(form, {'attr' : {'style' : 'color:black' } } ) }}
+     
+    sadfdsa   {{ form_errors(form, {'attr' : {'class' : 'error-class' } }) }}asdfads
+      {{ form_errors(form.model) }}
+    {{ form_widget(form.model, {'attr' : {'class' : 'form-inline','autocomplete':'off' } }) }}
+      {{ form_widget(form.save, { 'label': 'Szukaj' }) }}
+ 
+     {{ form_end(form) }}
+{% endblock %}

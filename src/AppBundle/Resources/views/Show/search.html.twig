@@ -1,0 +1,308 @@
+
+{% block contents %}
+    {{ form_start(form, {'attr' : {'style' : 'color:black' } } ) }}
+    {{ form_errors(form) }}
+    <div class="col-sm-6">
+        <div class="well well-sm">Marka: 
+            {{ form_widget(form.mark, {'attr' : {'class' : 'form-inline','autocomplete':'off' } }) }}
+            <input id="select_mark" type="button" value="lista">
+            {{ form_widget(form.marklist, {'attr' : {'class' : 'form-inline'} }) }}
+            <div id="form_mark_search" class="input_search well well-sm">
+                <ul class="list-group">
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"></li>
+                </ul>
+            </div>
+            <div class="alert alert-danger errorvalidate error_mark"></div>
+        </div>
+        <div class="well well-sm">Model:    
+            {{ form_widget(form.model, {'attr' : {'class' : 'form-inline','autocomplete':'off'} }) }}
+             <input id="select_model" type="button" value="lista">
+                 {{ form_widget(form.modellist, {'attr' : {'class' : 'form-inline'} }) }}
+            <div id="form_model_search" class="input_search well well-sm">
+                <ul class="list-group">
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"></li>
+                </ul>
+            </div>
+            <div class="alert alert-danger errorvalidate error_model">
+            </div>
+        </div>  
+        <div class="well well-sm">Cena:<br>
+            <span>&nbsp; od : {{ form_widget(form.pricefrom, {'attr' : {'class' : 'form-inline'} }) }}
+            </span>   
+            <div class="alert alert-danger errorvalidate error_pricefrom">
+            </div>
+            <br>
+            <span>&nbsp; do :
+            {{ form_widget(form.priceto, {'attr' : {'class' : 'form-inline' } }) }}</span> 
+            <div class="alert alert-danger errorvalidate error_priceto">
+            </div>
+        </div>
+        <div class="well well-sm">Typ silnika: 
+            {{ form_widget(form.enginetype, {'attr' : {'class' : 'form-inline'} }) }}
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="well well-sm">Typ nadwozia: 
+            {{ form_widget(form.bodytype, {'attr' : {'class' : 'form-inline'} }) }}</div>
+        <div class="well well-sm">Pojemność silnika: 
+            {{ form_widget(form.enginea, {'attr' : {'class' : 'form-inline' } }) }} <b>,</b> 
+            {{ form_widget(form.engineb, {'attr' : {'class' : 'form-inline'} }) }}
+        </div>
+        <div class="well well-sm">Rok produkcji:<br>
+            <span>&nbsp; od :</span>
+        {{ form_widget(form.yearfrom,{'attr' : {'class' : 'form-inline' } }) }}
+         <span>&nbsp; do :</span>
+         {{ form_widget(form.yearto,{'attr' : {'class' : 'form-inline' } }) }}
+         </div>
+
+
+    {{ form_row(form.save, { 'label': 'Szukaj' }) }}
+    </div>
+ {{ form_end(form) }}
+
+{% endblock %}
+{% block stylesheets %}
+<style type="text/css">
+#form_mark_search{
+cursor:pointer;
+width:260px;
+height:auto;
+position:absolute;
+z-index:3;
+margin-top:5px;
+box-shadow: -5px -5px 5px #888888;
+opacity:0.9;
+visibility:hidden;
+}
+#form_model_search{
+cursor:pointer;
+width:260px;
+height:auto;
+position:absolute;
+z-index:3;
+margin-top:5px;
+box-shadow: -5px -5px 5px #888888;
+opacity:0.9;
+visibility:hidden;
+}
+.list-group-item{
+    display:none;
+}
+#form_marklist{
+margin-left:47px; 
+display:none;
+width:150px;
+}
+#form_modellist{
+margin-left:47px; 
+display:none;
+width:150px;
+}
+#form_priceto{
+
+}
+    </style>
+
+{% endblock %}
+        
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var value_change_txt=0;
+            ///funkcje związane z podpowiedziami
+            $("#cont_search").find("input#form_mark").change(function() {     
+                $("#form_modellist").css("display","block");   
+                $("#select_mark").val("zwiń");  
+            })
+            $("#cont_search").find("input#form_mark").keyup(function() { 
+            var name_element=$(this).attr("id");
+            value = $("#cont_search").find("#"+ name_element).val();
+            isset_mark(value);
+            $("#cont_search").find("input#form_model").val($("#form_modellist").val());
+            })
+        $("#cont_search").find("input#form_mark").click(function() {
+            select_model($("#cont_search").find("input#form_mark").val());
+            $("#select_model").val("zwiń");
+            $("#form_modellist").css("display","block");  
+            if($('#form_mark_search').css("visibility")=="hidden"){
+                if($('#form_mark_search .list-group-item').css("display")=="block"){
+                $('#form_mark_search').css("visibility","visible"); 
+                $('#form_model_search').css("visibility","hidden"); 
+                }
+            }else{
+                $('#form_mark_search').css("visibility","hidden"); 
+            } 
+        })
+            function isset_mark(value,all_list){
+            var len=0;  
+            var list_all="";
+            if(all_list){
+            list_all="&all="+ encodeURIComponent(value);    
+            }        
+                 $.getJSON("{{asset('ajax/issetmark/')}}"+ encodeURIComponent(value),function(data){
+                    $('#form_mark_search  .list-group-item').css("display","none");
+                    $('#form_model_search  .list-group-item').css("display","none"); 
+                    $('#form_model_search').css("visibility","hidden"); 
+                    if(data.length>0){
+                         $('#form_mark_search').css("visibility","visible"); 
+                    }else{
+                         $('#form_mark_search').css("visibility","hidden"); 
+                    }
+                    if(data.length>3){
+                    len=3;    
+                    }else{
+                    len=data.length;      
+                    }
+                    for (i = 0; i < len; i++) {                        
+                    $('#form_mark_search').find(".list-group-item").eq(i).html(data[i]["mark"]);
+                    $('#form_mark_search .list-group-item').eq(i).css("display","block");  
+                    $('#form_mark_search').css("height","auto"); 
+                    }
+            }); 
+            }
+            $("#form_mark_search .list-group-item").click(function() {    
+            $("#select_mark").val("lista");         
+            mark=$("#form_mark_search .list-group-item").eq($("#form_mark_search .list-group-item").index(this)).html();
+            $("#cont_search").find("input#form_mark").val(mark);
+            select_model(mark);
+                $("#form_mark_search .list-group-item").eq($("#form_mark_search .list-group-item").index(this)).animate({
+                opacity: 0
+                }, 200, function() {
+                $('#form_mark_search .list-group-item').eq($("#form_mark_search .list-group-item").index(this)).css("opacity","1"); 
+                $('#form_mark_search').css("visibility","hidden"); 
+                });
+              
+            $("#cont_search").find("input#form_mark").animate({
+                opacity: 0
+                }, 200, function() {
+                $("#cont_search").find("input#form_mark").css("opacity","1");       
+                });        
+            })
+            //
+            $("#cont_search").find("input#form_model").keyup(function() {
+            var name_element=$(this).attr("id");
+            valueA = $("#cont_search").find("#"+ name_element).val();
+            valueB = $("#cont_search").find("#form_mark").val();
+            isset_model(valueA,valueB);
+            })
+            $("#cont_search").find("input#form_model").click(function() {
+            $("#form_modellist").css("display","none");  
+            $("#select_model").val("lista");  
+            //if($('#form_modellist').css("display")=="block"){
+
+          //  }else{
+          //  }
+            if($('#form_model_search').css("visibility")=="hidden"){
+                if($('#form_model_search .list-group-item').css("display")=="block"){
+                $('#form_model_search').css("visibility","visible"); 
+                }
+                }else{
+                $('#form_model_search').css("visibility","hidden"); 
+                } 
+            })
+            function isset_model(valueA,valueB){
+            var len=0;   
+                 $.getJSON("{{asset('ajax/issetmodel/')}}"+ encodeURIComponent(valueB)+"/"+ encodeURIComponent(valueA),function(data){
+                    $('#form_model_search  .list-group-item').css("display","none"); 
+                    if(data.length>0){
+                         $('#form_model_search').css("visibility","visible"); 
+                    }else{
+                         $('#form_model_search').css("visibility","hidden"); 
+                    }
+                    if(data.length>3){
+                    len=3;    
+                    }else{
+                    len=data.length;      
+                    }
+                    for (i = 0; i < len; i++) {                        
+                    $('#form_model_search').find(".list-group-item").eq(i).html(data[i]["model"]);
+                    $('#form_model_search .list-group-item').eq(i).css("display","block");  
+                    $('#form_model_search').css("height","auto"); 
+                    }
+            }); 
+            }
+            $("#form_model_search .list-group-item").click(function() {   
+                //tutaj dodajemy
+                if($("#form_modellist").css("display")=='none'){ 
+                $("#select_model").val("zwiń");    
+                $("#form_modellist").css("display","block");   
+                }else{
+                $("#form_modellist").css("display","none"); 
+                $("#select_model").val("lista");
+                }
+            mark=$("#form_model_search .list-group-item").eq($("#form_model_search .list-group-item").index(this)).html();
+            $("#cont_search").find("input#form_model").val(mark);
+                $("#form_model_search .list-group-item").eq($("#form_model_search .list-group-item").index(this)).animate({
+                opacity: 0
+                }, 200, function() {
+                $('#form_model_search .list-group-item').eq($("#form_model_search .list-group-item").index(this)).css("opacity","1"); 
+                $('#form_model_search').css("visibility","hidden"); 
+                });
+              
+            $("#cont_search").find("input#form_model").animate({
+                opacity: 0
+                }, 200, function() {
+                $("#cont_search").find("input#form_model").css("opacity","1");       
+                });        
+            })
+            
+            $("#select_mark").click(function() {    
+                $("#cont_search").find(".error_mark").css("display","none"); 
+                $('#form_mark_search  .list-group-item').css("display","none");
+                $('#form_mark_search').css("visibility","hidden"); 
+                if($("#form_marklist").css("display")=='none'){ 
+                $("#select_mark").val("zwiń");    
+                $("#form_marklist").css("display","block");   
+                }else{
+                $("#form_marklist").css("display","none"); 
+                $("#select_mark").val("lista");
+                } 
+            })   
+            $("#form_marklist").change(function() {     
+            $("#cont_search").find("input#form_mark").val($("#form_marklist").val());
+            select_model($("#form_marklist").val());
+            $("#form_modellist").css("display","block");   
+            $("#form_marklist").css("display","none");
+            $("#select_mark").val("lista");
+            $("#select_model").val("zwiń");
+            })   
+              $("#select_model").click(function() {    
+                $("#cont_search").find(".error_model").css("display","none"); 
+                $('#form_model_search  .list-group-item').css("display","none");
+                $('#form_model_search').css("visibility","hidden"); 
+                if($("#form_modellist").css("display")=='none'){  
+                $("#select_model").val("zwiń");
+                $("#form_modellist").css("display","block");   
+                }else{
+                $("#form_modellist").css("display","none"); 
+                $("#select_model").val("lista");
+                } 
+            }) 
+            $("#form_modellist").change(function() {     
+            $("#cont_search").find("input#form_model").val($("#form_modellist").val());
+            $("#form_modellist").css("display","none");
+            $("#select_model").val("lista");
+            }) 
+            select_model($("#cont_search").find("input#form_mark").val());
+            function select_model(value){
+            $('#form_modellist').html("");    
+            var len=0;   
+                $.getJSON("{{asset('ajax/selectmodel/')}}" + encodeURIComponent(value),function(data){
+                len=data.length;  
+                    if(data.length==0){
+                    $("#form_modellist").css("display","none");
+                    $("#select_model").val("lista");
+                    }else{
+                        for (i = 0; i < len; i++) {                        
+                        $('#form_modellist').append("<option value='"+data[i]["model"]+"'>"+data[i]["model"]+"</option>");
+                        }
+                    }               
+            }); 
+            }
+        })
+    </script>
+{% endblock %}

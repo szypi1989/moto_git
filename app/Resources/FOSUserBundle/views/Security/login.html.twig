@@ -1,0 +1,29 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<div class="col-sm-6" style="width:min-content;">
+{% if error %}
+     <div class="input-group">
+         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div></div>
+{% endif %}
+    <div class="col-sm-6" style="float:right;">
+    <a href="{{path("fos_user_registration_register")}}">Zarejestruj</a>    
+    </div>
+<form action="{{ path("fos_user_security_check") }}" method="post">
+<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+    <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" class="form-inline" />
+    </div>
+    <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+    <input type="password" id="password" name="_password" required="required" class="form-inline" />    
+    </div>
+    <div class="input-group" style="float:left;">
+    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+    <label for="remember_me">Zapamiętaj</label>
+    </div>
+    <div class="input-group" style="float:right;">
+     <input type="submit" id="_submit" name="_submit" value="Zaloguj" />
+    </div>
+</form>
+    
+</div>

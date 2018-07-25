@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
+{% block contents %}
+{% block fos_user_content %}
+<div class="col-sm-12">
+    <div class="alert alert-success">
+    <p>Gratulacje <strong>{{  user.username }} </strong> . Założyłeś konto </p><br>
+    <p><a href="{{ path('edit_info',{ 'user': app.user.username }) }}">Ustaw dodatkowe informacje o użytkowniku , klikając ten link</a></p>
+    </div>
+{% endblock fos_user_content %}
+{% endblock %}

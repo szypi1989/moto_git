@@ -1,0 +1,39 @@
+{# default Sliding pagination control implementation #}
+
+{% if pageCount > 1 %}
+<div class="pagination">
+    {% if first is defined and current != first %}
+        <span class="first">
+            <a href="{{ path(route, query|merge({(pageParameterName): first})) }}{% if app.request.method == 'POST' %}&search=1&model={{ app.request.request.get("form")["model"]}}&mark={{ app.request.request.get("form")["mark"]}}&yearfrom={{ app.request.request.get("form")["yearfrom"]}}&yearto={{ app.request.request.get("form")["yearto"]}}&pricefrom={{ app.request.request.get("form")["pricefrom"]}}&priceto={{ app.request.request.get("form")["priceto"]}}&enginetype={{ app.request.request.get("form")["enginetype"]}}&bodytype={{ app.request.request.get("form")["bodytype"]}}&enginea={{ app.request.request.get("form")["enginea"]}}&engineb={{ app.request.request.get("form")["engineb"]}}{% endif %}">&lt;&lt;</a>
+        </span>
+    {% endif %}
+
+    {% if previous is defined %}
+        <span class="previous">
+            <a href="{{ path(route, query|merge({(pageParameterName): previous})) }}{% if app.request.method == 'POST' %}&search=1&model={{ app.request.request.get("form")["model"]}}&mark={{ app.request.request.get("form")["mark"]}}&yearfrom={{ app.request.request.get("form")["yearfrom"]}}&yearto={{ app.request.request.get("form")["yearto"]}}&pricefrom={{ app.request.request.get("form")["pricefrom"]}}&priceto={{ app.request.request.get("form")["priceto"]}}&enginetype={{ app.request.request.get("form")["enginetype"]}}&bodytype={{ app.request.request.get("form")["bodytype"]}}&enginea={{ app.request.request.get("form")["enginea"]}}&engineb={{ app.request.request.get("form")["engineb"]}}{% endif %}">&lt;</a>
+        </span>
+    {% endif %}
+
+    {% for page in pagesInRange %}
+        {% if page != current %}
+          <span class="page">
+             <a style="font-size: 17px; background-color:#ffc; padding:13px;" href="{{ path(route, query|merge({(pageParameterName): page})) }}{% if app.request.method == 'POST' %}&search=1&model={{ app.request.request.get("form")["model"]}}&mark={{ app.request.request.get("form")["mark"]}}&yearfrom={{ app.request.request.get("form")["yearfrom"]}}&yearto={{ app.request.request.get("form")["yearto"]}}&pricefrom={{ app.request.request.get("form")["pricefrom"]}}&priceto={{ app.request.request.get("form")["priceto"]}}&enginetype={{ app.request.request.get("form")["enginetype"]}}&bodytype={{ app.request.request.get("form")["bodytype"]}}&enginea={{ app.request.request.get("form")["enginea"]}}&engineb={{ app.request.request.get("form")["engineb"]}}{% endif %}">{{ page }}</a>
+           </span>
+        {% else %}
+            <button type="button" class="btn btn-outline-light btn-lg text-dark"><span class="current">{{ page }}</span></button>
+        {% endif %}
+
+    {% endfor %}
+
+    {% if next is defined %}
+        <span class="next">
+            <a href="{{ path(route, query|merge({(pageParameterName): next})) }}{% if app.request.method == 'POST' %}&search=1&model={{ app.request.request.get("form")["model"]}}&mark={{ app.request.request.get("form")["mark"]}}&yearfrom={{ app.request.request.get("form")["yearfrom"]}}&yearto={{ app.request.request.get("form")["yearto"]}}&pricefrom={{ app.request.request.get("form")["pricefrom"]}}&priceto={{ app.request.request.get("form")["priceto"]}}&enginetype={{ app.request.request.get("form")["enginetype"]}}&bodytype={{ app.request.request.get("form")["bodytype"]}}&enginea={{ app.request.request.get("form")["enginea"]}}&engineb={{ app.request.request.get("form")["engineb"]}}{% endif %}">&gt;</a>
+        </span>
+    {% endif %}
+    {% if last is defined and current != last %}
+        <span class="last">
+            <a href="{{ path(route, query|merge({(pageParameterName): last})) }}{% if app.request.method == 'POST' %}&search=1&model={{ app.request.request.get("form")["model"]}}&mark={{ app.request.request.get("form")["mark"]}}&yearfrom={{ app.request.request.get("form")["yearfrom"]}}&yearto={{ app.request.request.get("form")["yearto"]}}&pricefrom={{ app.request.request.get("form")["pricefrom"]}}&priceto={{ app.request.request.get("form")["priceto"]}}&enginetype={{ app.request.request.get("form")["enginetype"]}}&bodytype={{ app.request.request.get("form")["bodytype"]}}&enginea={{ app.request.request.get("form")["enginea"]}}&engineb={{ app.request.request.get("form")["engineb"]}}{% endif %}">&gt;&gt;</a>
+        </span>
+    {% endif %}
+</div>
+{% endif %}

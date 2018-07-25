@@ -1,0 +1,31 @@
+{% extends 'layout.html.twig' %}
+{% block stylesheets %}
+<style type="text/css">
+#edit_profile{
+    color:#000;
+
+ 
+}
+ </style>
+{% endblock %}
+{% block contents %}
+     {% if parameters.success == 'true' %}
+    <div class="alert alert-success">
+    <strong>Sukces</strong> Informace zostały zmienione !!!
+    </div>
+    {% endif %}
+ {{ form_start(form, {'attr' : {'style' : 'color:red' } } ) }}
+  <div id="edit_profile" class="col-sm-6">
+    <div class="well well-sm">Adres zamieszkania:
+        {{ form_widget(form.address, {'attr' : {'class' : 'form-inline' } }) }}
+    </div>  
+    <div class="well well-sm">Numer telefonu:
+         {{ form_errors(form) }}
+        {{ form_widget(form.phonenumber, {'attr' : {'class' : 'form-inline' } }) }}
+    </div>
+        <div class="well well-sm">
+            {{ form_row(form.save, { 'label': 'Zapisz' }) }}
+        </div>
+        {{ form_end(form) }}
+    </div> 
+    {% endblock %}

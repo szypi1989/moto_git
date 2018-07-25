@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">        
+    <div class="row" style="background-image:url('{{asset('images/top.jpg')}}'); background-size: 1000px 200px; height:150px;  background-repeat: no-repeat;">        
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-4">
+        {% if app.user %}
+            <div class="col-sm-12">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> Zalogowany jako: {{ app.user.username|default('anonimowy') }}
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                    <li><a href="{{ path('edit_info',{ 'user': app.user.username }) }}"><span><i class="glyphicon glyphicon-user"></i> Edycja informacji</a></li>
+                    <li><a href="{{ path('fos_user_security_logout') }}"><i class="glyphicon glyphicon-off"></i> wyloguj</a></li>
+                </div>
+            </div>
+        {% else %}
+            {{ render(controller(
+            'FOSUserBundle:Security:login'
+            )) }} 
+        {% endif %}
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">    
+                    <ul class="nav navbar-nav">
+                    <li class="{% if app.request.attributes.get('_route') == 'index' %}active{% endif %}"><a href="{{ path('index') }}"><img style="margin-top:-10px;"src="{% if app.request.attributes.get('_route') == 'index' %}{{asset('images/home1.png')}}{% else %}{{asset('images/home2.png')}}{% endif %}" alt="home" width="36px"></a></li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="padding:15px;" data-toggle="tooltip" title="Kliknij aby znaleźć auto według własnego kryterium!">Wyszukiwarka zaawansowana
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <div id="cont_search" class="jumbotron" style="width:800px; height:auto;">
+                                {{ render(controller(
+                                'AppBundle:Show:search'
+                                )) }}     
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    {% if app.user %}<li class="{% if app.request.attributes.get('_route') == 'append' %}active{% endif %}"><a href="{{ path('append') }}">Dodaj ogłoszenie</a></li>{% else %}<li class="disabled"><a title="Zaloguj się aby korzystać z tej opcji" href="{{ path('append') }}"> Dodaj ogłoszenie</a></li> {% endif %}
+                    {% if app.user %}<li class="{% if app.request.attributes.get('_route') == 'my_add' %}active{% endif %}"><a href="{{ path('my_add') }}">Moje ogłoszenia</a></li>{% else %}<li class="disabled"><a title="Zaloguj się aby korzystać z tej opcji" href="{{ path('my_add') }}"> Moje ogłoszenia</a></li> {% endif %}
+                    {{ render(controller(
+                    'AppBundle:Show:menu'
+                    )) }}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="col-sm-12">
+        {% block contents %}
+        {% endblock %}
+        </div>
+        <div class="col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading"><h3>Copyright Mariusz Szypuła 2017</h3></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+tr:hover { 
+    background-color: #e7edf0;
+}
+input{
+   color:#000;
+       
+}
+
+.errorvalidate{
+    display:none;
+}
+
+#append{
+    background-color: #0f0;
+    color:#00f;
+    visibility:hidden;
+       visibility:visible;
+ 
+}

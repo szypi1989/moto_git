@@ -1,0 +1,49 @@
+{% extends 'layout.html.twig' %}
+{% block title %}
+Auto giełda
+{% endblock %}
+{% block contents %}
+<div class="col-sm-12">
+{% if entities is empty %}
+    <div class="alert alert-info">
+    <strong>Brak ogłoszeń</strong> : Obecnie nie wstawiłeś jeszcze żadnego ogłoszenia.
+    </div>
+{% else %}
+<div class="well ">Moje ogłoszenia (kliknij aby uzyskać więcej informacji)</div>
+<table class="table table-bordered">
+    <thead>
+      <tr class="info">
+        <th>Zdjęcie</th>
+        <th>Model</th>
+        <th>Marka</th>
+        <th>Cena</th>
+        <th>Silnik</th>
+        <th>Moc</th>
+        <th>Typ silnika</th>
+        <th>Rok produkcji:</th>
+        <th>Typ nadwozia:</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+        {% for imie in entities %}         
+        <tr data-href="{{ path('view', {'page': imie.id}) }}" style="cursor:pointer;">
+            <td><img src="{{asset('images/'~imie.id~'.jpg?') }}{{ date().timestamp }}" style="height:130px; widht:auto;" class="img-thumbnail"></td>
+            <td>{{ imie.model }}</td>
+            <td>{{ imie.mark }}</td>   
+            <td>{{ imie.price }}</td>   
+            <td>{{ imie.engine }}</td>   
+            <td>{{ imie.power }}</td>   
+            <td>{{ imie.enginetype}}</td>   
+            <td>{{ imie.year}}</td>  
+            <td>{{ imie.bodytype}}</td>
+            <td><a href="{{ path('edit_add',{ 'id_add': imie.id }) }}">Edytuj</a></td>  
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+  </table>
+{% endif %}
+</div>
+  
+{% endblock %}

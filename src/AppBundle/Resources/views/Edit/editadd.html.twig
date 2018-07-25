@@ -1,0 +1,428 @@
+{% extends 'layout.html.twig' %}
+{% block contents %}
+    <div id="append">
+        {% if parameters.success is defined  %}
+            {% if parameters.success == 'true' %}
+            <div class="alert alert-success">
+                <strong>Sukces</strong> Ogłoszenie zostało aktualizowane pomyślnie !!!<br>
+                <a href="{{ path('view',{ 'page': app.request.get('id_add') }) }}"><strong>Sprawdź jak wygląda</strong></a>
+            </div>
+            {% else%}
+             <div class="alert alert-danger">
+                 <strong>Błąd</strong> Edycja ogłoszenia poszła niepomyślnie<br>
+                  {% if err_validate.post is defined  %}
+                       {% for key, value in err_validate.post %}
+                        <li>{{value}}</li>   
+                       {% endfor %}
+                   {% endif %}
+            </div>
+            {% endif %}
+        {% endif %}
+        <div class="well well-sm"><b>Edycja ogłoszenia</b>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ path('view', {'page': app.request.get('id_add')}) }}" class="btn btn-info" role="button">Zobacz ogłoszenie</a></div>
+        {{ form_start(form, {'attr' : {'style' : 'color:black' } } ) }}
+        {{ form_errors(form) }}
+        <div class="col-sm-6">
+            <div class="well well-sm">Marka: 
+                {{ form_widget(form.mark, {'attr' : {'class' : 'form-inline','autocomplete':'off'  } }) }}
+                <input id="select_marked" type="button" value="lista">
+                {{ form_widget(form.marklisted, {'attr' : {'class' : 'form-inline'} }) }}
+                <div id="form_marked_search" class="input_search well well-sm">
+                    <ul class="list-group">
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item"></li>
+                    </ul>
+                </div>
+                <div class="alert alert-danger errorvalidate error_mark" {% if err_validate.mark is defined  %}style="display:block;"{% endif %}>
+                    {% if err_validate.mark is defined  %}
+                        {% for key, value in err_validate.mark %}
+                            <li>{{value}}</li>   
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="well well-sm">Model:
+                {{ form_widget(form.model, {'attr' : {'class' : 'form-inline','autocomplete':'off' } }) }}
+                <input id="select_modeled" type="button" value="lista">
+                {{ form_widget(form.modellisted, {'attr' : {'class' : 'form-inline','autocomplete':'off' } }) }}
+                <div id="form_modeled_search" class="input_search well well-sm">
+                    <ul class="list-group">
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item"></li>
+                    </ul>
+                </div>
+                <div class="alert alert-danger errorvalidate error_model" {% if err_validate.model is defined  %}style="display:block;"{% endif %}>
+                    {% if err_validate.model is defined  %}
+                        {% for key, value in err_validate.model %}
+                            <li>{{value}}</li>   
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>     
+            <div class="well well-sm">Cena:
+                {{ form_widget(form.price, {'attr' : {'class' : 'form-inline' } }) }}
+                <div class="alert alert-danger errorvalidate error_price" {% if err_validate.price is defined  %}style="display:block;"{% endif %}>
+                    {% if err_validate.price is defined  %}
+                        {% for key, value in err_validate.price %}
+                            <li>{{value}}</li>   
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>        
+            <div class="well well-sm" id="gallery_allow" style="display:inline-block; max-width:500px; ">
+                <p>Aktualne zdjecia ( Wybierz zdjęcia do usunięcia) : </p><br>
+                {% if allow_image is defined  %}
+                    {% for emailField in allow_image %}
+                        <div class="cnt_image_box" style="display:inline-block; max-width:150px; max-height:150px;  min-height:150px; overflow:hidden; margin:3px;">
+                            <div style="position:absolute; width:150px; height:140px;"><input id="form_deleteimage_{{ loop.index }}" name="form[deleteimage][{{ loop.index }}]" class="deleteimage-box" style="margin:5px; transform: scale(1.5);" type="checkbox"></div>
+                            <center><img class="allow_image_gl" src="{{asset('images/'~ app.request.get('id_add') ~ '/'~ emailField ~'?')}}{{ date().timestamp }}" class="img-responsive" alt="Cinque Terre" width="150"></center>
+                        </div>
+                    {% endfor %}  
+                {% endif %}  
+                {% set empty_allow_image = true %} 
+                {% set empty_append_image = true %}    
+                {% set index_inc = allow_image is defined ?  allow_image|length : 0 %}
+                {% if allow_image is defined %}               
+                    {% if allow_image|length > 0 %}  
+                        {% set empty_allow_image = false %}    
+                    {% endif %}  
+                {% endif %} 
+                 {% if append_image is defined %}
+                    {% if append_image is iterable %}
+                        {% if append_image|length > 0 %}  
+                        {% set empty_append_image = false %}    
+                        {% endif %}  
+                    {% endif %}  
+                {% endif %} 
+                {% if empty_append_image and empty_allow_image %}
+                    <div class="alert alert-info">
+                    <strong>Brak zdjęć</strong>
+                    </div>  
+                {% endif %}    
+                {% if append_image is defined  %}
+                    {% if append_image is iterable %}
+                        {% for emailField in append_image %}
+                            {% if emailField is not empty %}
+                                <div class="cnt_image_box" style="display:inline-block; max-width:150px; max-height:150px;  min-height:150px; overflow:hidden; margin:3px;">
+                                    <div style="position:absolute; width:150px; height:140px;"><input id="form_deleteimage_{{ loop.index+index_inc }}" name="form[deleteimage][{{ loop.index+index_inc }}]" class="deleteimage-box" style="margin:5px; transform: scale(1.5);" type="checkbox"></div>
+                                    <center><img class="allow_image_gl" src="{{asset('images/'~ app.request.get('id_add') ~ '/'~ (loop.index+index_inc) ~'.jpg?')}}{{ date().timestamp }}" class="img-responsive" alt="Cinque Terre" width="150"></center>
+                                </div>
+                            {% endif %}
+                        {% endfor %}  
+                    {% endif %}
+                {% endif %} 
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="well well-sm">Moc(KM):
+                {{ form_widget(form.power, {'attr' : {'class' : 'form-inline' } }) }}
+                <div class="alert alert-danger errorvalidate error_power" {% if err_validate.power is defined  %}style="display:block;"{% endif %}>
+                {% if err_validate.power is defined  %}
+                       {% for key, value in err_validate.power %}
+                        <li>{{value}}</li>   
+                       {% endfor %}
+                   {% endif %}
+                </div>
+            </div>
+            <div class="well well-sm">Pojemność silnika: 
+                {{ form_widget(form.enginea, {'attr' : {'class' : 'form-inline' } }) }} <b>,</b> 
+                {{ form_widget(form.engineb, {'attr' : {'class' : 'form-inline' } }) }}
+            </div>
+            <div class="well well-sm">Typ silnika: 
+                {{ form_widget(form.enginetype, {'attr' : {'class' : 'form-inline'} }) }}
+            </div>
+            <div class="well well-sm">Rok produkcji: 
+                {{ form_widget(form.year, {'attr' : {'class' : 'form-inline'} }) }}
+            </div>
+            <div class="well well-sm">Typ nadwozia: 
+                {{ form_widget(form.bodytype, {'attr' : {'class' : 'form-inline'} }) }}
+            </div>
+            <div class="well well-sm">Opis samochodu: 
+                {{ form_widget(form.description, {'attr' : {'class' : 'form-inline'} }) }}
+            </div>
+            <div class="well well-sm">Edytuj igłówne zdjęcie (AVATAR) samochodu:
+                <div class="alert alert-danger errorvalidate error_avatar" {% if err_validate.avatar is defined  %}style="display:block;"{% endif %}>
+                {% if err_validate.avatar is defined  %}
+                   {% for key, value in err_validate.avatar %}
+                    <li>{{value}}</li> 
+                   {% endfor %}
+                {% endif %}
+                </div>           
+                {{ form_widget(form.avatar, {'attr' : {'class' : 'form-inline'} }) }}
+                <a href="#" id="add-another-image">Dodaj następne zdjęcie</a>
+                <div class="alert alert-danger errorvalidate error_image" {% if err_validate.image is defined  %}style="display:block;"{% endif %}>
+                    {% if err_validate.image is defined  %}
+                       {% for key, value in err_validate.image %}
+                         <li>{{value}}</li> 
+                       {% endfor %}
+                    {% endif %}
+                </div>   
+                <ul id="image-fields-list" data-prototype="{{ form_widget(form.image.vars.prototype)|e }}">
+                    {% for emailField in form.image %}
+                        <li>
+                            {{ form_widget(emailField, {'attr' : {'class' : 'form-inline'} }) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </div>   
+
+            <div class="well well-sm">
+                {{ form_row(form.save, { 'label': 'Zapisz' }) }} 
+            </div>
+        </div> 
+    </div>
+{% endblock %}
+    
+{% block stylesheets %}
+    <style type="text/css">
+       {{ parent() }}
+        {% if err_validate is defined  %}
+                   {% for key, value in err_validate %}
+                    input#form_{{key}}{
+                             border-style:solid; border-width:2px; border-color:red;          
+                    }  
+                   {% endfor %}
+        {% endif %}
+        #form_marked_search{
+        cursor:pointer;
+        width:260px;
+        height:auto;
+        position:absolute;
+        z-index:3;
+        margin-top:5px;
+        box-shadow: -5px -5px 5px #888888;
+        opacity:0.9;
+        visibility:hidden;
+        }
+        #form_modeled_search{
+        cursor:pointer;
+        width:260px;
+        height:auto;
+        position:absolute;
+        z-index:3;
+        margin-top:5px;
+        box-shadow: -5px -5px 5px #888888;
+        opacity:0.9;
+        visibility:hidden;
+        }
+        .list-group-item{
+        display:none;
+        }
+        #form_marklisted{
+        margin-left:47px; 
+        display:none;
+        width:150px;
+        }
+        #form_modellisted{
+        margin-left:47px; 
+        display:none;
+        width:150px;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var change_check_img=false;  
+                {% if form.image is defined  %}
+                    var emailCount = '{{ form.image|length }}';
+                    $('#add-another-image').click(function(e) {
+                    e.preventDefault();
+                    var emailList = $('#image-fields-list');
+                    var newWidget = emailList.attr('data-prototype');
+                    newWidget = newWidget.replace(/__name__/g, emailCount);
+                    emailCount++;
+                    var newLi = $('<li></li>').html(newWidget);
+                    newLi.appendTo(emailList);
+                    var n = $( ".email-box" ).length;
+                    $('#form_image_'+(n-1)).click();
+                    });
+                {% endif %} 
+            ///////////////////////////
+            var value_change_txt=0;
+            $("#append").find("input#form_mark").change(function() {     
+                $("#form_modellisted").css("display","block");   
+                $("#select_marked").val("zwiń");  
+            })
+            $("#append").find("input#form_mark").keyup(function() { 
+                var name_element=$(this).attr("id");
+                value = $("#append").find("#"+ name_element).val();
+                isset_mark(value);
+                $("#append").find("input#form_model").val($("#form_modellisted").val());
+            })
+            $("#append").find("input#form_mark").click(function() {
+                select_model($("#append").find("input#form_mark").val());
+                $("#select_modeled").val("zwiń");
+                $("#form_modellisted").css("display","block");  
+                if($('#form_marked_search').css("visibility")=="hidden"){
+                    if($('#form_marked_search .list-group-item').css("display")=="block"){
+                        $('#form_marked_search').css("visibility","visible"); 
+                        $('#form_modeled_search').css("visibility","hidden"); 
+                    }
+                }else{
+                    $('#form_marked_search').css("visibility","hidden"); 
+                } 
+            })
+            function isset_mark(value,all_list){
+                var len=0;  
+                var list_all="";
+                if(all_list){
+                list_all="&all="+ encodeURIComponent(value);    
+                }         
+                 $.getJSON("{{asset('ajax/issetmark/')}}"+ encodeURIComponent(value),function(data){
+                    $('#form_marked_search  .list-group-item').css("display","none");
+                    $('#form_modeled_search  .list-group-item').css("display","none"); 
+                    $('#form_modeled_search').css("visibility","hidden"); 
+                    if(data.length>0){
+                         $('#form_marked_search').css("visibility","visible"); 
+                    }else{
+                         $('#form_marked_search').css("visibility","hidden"); 
+                    }
+                    if(data.length>3){
+                     len=3;    
+                    }else{
+                        len=data.length;      
+                    }
+                    for (i = 0; i < len; i++) {                        
+                        $('#form_marked_search').find(".list-group-item").eq(i).html(data[i]["mark"]);
+                        $('#form_marked_search .list-group-item').eq(i).css("display","block");  
+                        $('#form_marked_search').css("height","auto"); 
+                    }
+                }); 
+            }
+            $("#form_marked_search .list-group-item").click(function() { 
+                $("#select_marked").val("lista");  
+                mark=$("#form_marked_search .list-group-item").eq($("#form_marked_search .list-group-item").index(this)).html();
+                $("#append").find("input#form_mark").val(mark);
+                select_model(mark);
+                $("#form_mark_search .list-group-item").eq($("#form_marked_search .list-group-item").index(this)).animate({
+                opacity: 0
+                }, 200, function() {
+                $('#form_marked_search .list-group-item').eq($("#form_marked_search .list-group-item").index(this)).css("opacity","1"); 
+                $('#form_marked_search').css("visibility","hidden"); 
+                });
+                $("#append").find("input#form_mark").animate({
+                opacity: 0
+                }, 200, function() {
+                $("#append").find("input#form_mark").css("opacity","1");       
+                });        
+            })
+            $("#append").find("input#form_model").keyup(function() {
+                var name_element=$(this).attr("id");
+                valueA = $("#append").find("#"+ name_element).val();
+                valueB = $("#append").find("#form_mark").val();
+                isset_model(valueA,valueB);
+            })
+            $("#append").find("input#form_model").click(function() {
+                $("#form_modellisted").css("display","none");  
+                $("#select_modeled").val("lista");  
+                if($('#form_modeled_search').css("visibility")=="hidden"){
+                    if($('#form_modeled_search .list-group-item').css("display")=="block"){
+                        $('#form_modeled_search').css("visibility","visible"); 
+                    }
+                }else{
+                    $('#form_modeled_search').css("visibility","hidden"); 
+                } 
+            })
+            function isset_model(valueA,valueB){
+                var len=0;              
+                $.getJSON("{{asset('ajax/issetmodel/')}}"+ encodeURIComponent(valueB)+"/"+ encodeURIComponent(valueA),function(data){
+                    $('#form_modeled_search  .list-group-item').css("display","none"); 
+                        if(data.length>0){
+                             $('#form_modeled_search').css("visibility","visible"); 
+                        }else{
+                             $('#form_modeled_search').css("visibility","hidden"); 
+                        }
+                        if(data.length>3){
+                            len=3;    
+                        }else{
+                            len=data.length;      
+                        }
+                    for (i = 0; i < len; i++) {                        
+                    $('#form_modeled_search').find(".list-group-item").eq(i).html(data[i]["model"]);
+                    $('#form_modeled_search .list-group-item').eq(i).css("display","block");  
+                    $('#form_modeled_search').css("height","auto"); 
+                    }
+                }); 
+            }
+            $("#form_modeled_search .list-group-item").click(function() {
+                if($("#form_modellisted").css("display")=='none'){ 
+                    $("#select_modeled").val("zwiń");    
+                    $("#form_modellisted").css("display","block");   
+                }else{
+                    $("#form_modellisted").css("display","none"); 
+                    $("#select_modeled").val("lista");
+                }
+                mark=$("#form_modeled_search .list-group-item").eq($("#form_modeled_search .list-group-item").index(this)).html();
+                $("#append").find("input#form_model").val(mark);
+                $("#form_modeled_search .list-group-item").eq($("#form_modeled_search .list-group-item").index(this)).animate({
+                opacity: 0
+                }, 200, function() {
+                $('#form_modeled_search .list-group-item').eq($("#form_modeled_search .list-group-item").index(this)).css("opacity","1"); 
+                $('#form_modeled_search').css("visibility","hidden"); 
+                });
+                $("#append").find("input#form_model").animate({
+                opacity: 0
+                }, 200, function() {
+                $("#append").find("input#form_model").css("opacity","1");       
+                });        
+            })
+            
+            $("#select_marked").click(function() {    
+                $("#append").find(".error_mark").css("display","none"); 
+                $('#form_marked_search  .list-group-item').css("display","none");
+                $('#form_marked_search').css("visibility","hidden"); 
+                if($("#form_marklisted").css("display")=='none'){ 
+                    $("#select_marked").val("zwiń");    
+                    $("#form_marklisted").css("display","block");   
+                }else{
+                    $("#form_marklisted").css("display","none"); 
+                    $("#select_marked").val("lista");
+                } 
+            })   
+            $("#form_marklisted").change(function() {     
+                $("#append").find("input#form_mark").val($("#form_marklisted").val());
+                select_model($("#form_marklisted").val());
+                $("#form_modellisted").css("display","block");   
+                $("#form_marklisted").css("display","none");
+                $("#select_marked").val("lista");
+                $("#select_modeled").val("zwiń");
+            })   
+              $("#select_modeled").click(function() {    
+                $("#append").find(".error_model").css("display","none"); 
+                $('#form_modeled_search  .list-group-item').css("display","none");
+                $('#form_modeled_search').css("visibility","hidden"); 
+                if($("#form_modellisted").css("display")=='none'){  
+                    $("#select_modeled").val("zwiń");
+                    $("#form_modellisted").css("display","block");   
+                }else{
+                    $("#form_modellisted").css("display","none"); 
+                    $("#select_modeled").val("lista");
+                } 
+            }) 
+            $("#form_modellisted").change(function() {     
+                $("#append").find("input#form_model").val($("#form_modellisted").val());
+                $("#form_modellisted").css("display","none");
+                $("#select_modeled").val("lista");
+            }) 
+            select_model($("#append").find("input#form_mark").val());
+            function select_model(value){
+                $('#form_modellisted').html("");    
+                var len=0;   
+                     $.getJSON("{{asset('ajax/selectmodel/')}}" + encodeURIComponent(value),function(data){
+                    len=data.length;  
+                        if(data.length==0){
+                            $("#form_modellisted").css("display","none");
+                            $("#select_modeled").val("lista");
+                        }else{
+                            for (i = 0; i < len; i++) {                        
+                                $('#form_modellisted').append("<option value='"+data[i]["model"]+"'>"+data[i]["model"]+"</option>");
+                            }
+                        }               
+                    }); 
+            }
+        })
+    </script>
+{% endblock %}

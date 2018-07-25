@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: 00007666_moto
+    database_user: 00007666_moto
+    database_password: haker777999
+    mailer_transport: smtp
+    mailer_host: az-serwer1616470.online.pro
+    mailer_user: sdeddb33@onet.pl
+    mailer_password: Haker777
+    secret: d9e9fd98cc30c710b0b7f245304acf31c5192040

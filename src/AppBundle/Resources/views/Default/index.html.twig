@@ -1,0 +1,73 @@
+{% extends 'layout.html.twig' %}
+{% block title %}
+Auto giełda
+{% endblock %}
+{% block contents %}
+<div class="col-sm-12">
+    <div class="well">{% if filtr is not defined %}Wszystkie ogłoszenia<b>&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;</b>{% endif %}Kliknij na [ Wyszukiwarka zaawansowana ] aby znaleźć auto według własnego kryterium .
+    {% if filtr is defined %}
+    <br>
+    <div class="alert alert-info">
+        <strong><i>Filtrowanie:</i></strong>
+        {% for key,value in filtr %}
+            <b>[ {{transfiltr[key]}} : {{value}} ]</b>  
+        {% endfor %}
+    </div>
+    {% endif %}
+    </div>
+{% if pagination|length > 0 %}   
+    {% set sortname = pagination.getSort()|split('.') %} 
+    {% set sortname = sortname[1] %} 
+    {% set sortname = transsort[sortname]%}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr class="info">
+                    <div class="well well-sm">Kliknij na wybraną kolumnę aby posortować ( malejąco lub rosnąco ) według parametrów wybranej kolumny !
+                        <br><b>[&nbsp;Posortowane według kolumny&nbsp;:&nbsp; [{{sortname|upper}}] : &nbsp;[{% if pagination.getDirection()=='asc' %}ROSNĄCO{% else %}MALEJĄCO{% endif %}]&nbsp;]</b>&nbsp;&nbsp; Kliknij na ogłoszenie aby uzyskać więcej szczegółów !
+                    </div>
+                    <th>Zdjęcie</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Model', 'a.model') }}{% if pagination.isSorted('a.model') %} {% if pagination.getDirection()=='desc'%}<i class="glyphicon glyphicon-menu-up"></i>{% else %}<i class="glyphicon glyphicon-menu-down"></i>{% endif %}{% endif %}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Marka', 'a.mark') }} {% if pagination.isSorted('a.mark') %}{% if pagination.getDirection()=='desc'%}<i class="glyphicon glyphicon-menu-up"></i>{% else %}<i class="glyphicon glyphicon-menu-down"></i>{% endif %}{% endif %}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Cena', 'a.price') }} {% if pagination.isSorted('a.price') %}{% if pagination.getDirection()=='desc'%}<i class="glyphicon glyphicon-menu-up"></i>{% else %}<i class="glyphicon glyphicon-menu-down"></i>{% endif %}{% endif %}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Silnik', 'a.engine') }} {% if pagination.isSorted('a.engine') %}{% if pagination.getDirection()=='desc'%}<i class="glyphicon glyphicon-menu-up"></i>{% else %}<i class="glyphicon glyphicon-menu-down"></i>{% endif %}{% endif %}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Moc', 'a.power') }} {% if pagination.isSorted('a.power') %}{% if pagination.getDirection()=='desc'%}<i class="glyphicon glyphicon-menu-up"></i>{% else %}<i class="glyphicon glyphicon-menu-down"></i>{% endif %}{% endif %}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Typ silnika', 'a.enginetype') }}{% if pagination.isSorted('a.enginetype') %} {% if pagination.getDirection()=='desc'%}<i class="glyphicon glyphicon-menu-up"></i>{% else %}<i class="glyphicon glyphicon-menu-down"></i>{% endif %}{% endif %}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Rok produkcji', 'a.year') }}{% if pagination.isSorted('a.year') %} {% if pagination.getDirection()=='desc'%}<i class="glyphicon glyphicon-menu-up"></i>{% else %}<i class="glyphicon glyphicon-menu-down"></i>{% endif %}{% endif %}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Typ nadwozia', 'a.bodytype') }}{% if pagination.isSorted('a.bodytype') %} {% if pagination.getDirection()=='desc'%}<i class="glyphicon glyphicon-menu-up"></i>{% else %}<i class="glyphicon glyphicon-menu-down"></i>{% endif %}{% endif %}</th>
+                </tr>
+            </thead>
+            <tbody>         
+                {% for imie in pagination %}
+                    <tr data-toggle="tooltip" title="Kliknij aby uzyskać więcej informacji dla wybranego ogłoszenia" data-href="{{ path('view', {'page': imie.id}) }}" style="cursor:pointer;">
+                        <td><img src="{{asset('images/'~imie.id~'.jpg?') }}{{ date().timestamp }}" style="max-height:130px; width:auto;" class="img-thumbnail"></td>
+                        <td>{{ imie.model }}</td>
+                        <td>{{ imie.mark }}</td>   
+                        <td>{{ imie.price }}</td>   
+                        <td>{{ imie.engine }}</td>   
+                        <td>{{ imie.power }}</td>   
+                        <td>{{ imie.enginetype}}</td>   
+                        <td>{{ imie.year}}</td>  
+                        <td>{{ imie.bodytype}}</td>
+                        {% if app.user %}{% if app.user.id == imie.id_user  %} <td><a href="{{ path('edit_add',{ 'id_add': imie.id }) }}">Edytuj</a></td> {% endif %}{% endif %}
+
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>  
+        <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+        </div>
+{% else %} 
+    <div class="alert alert-info" role="alert">
+        Brak wyników według danych kryterium !!!
+    </div>
+{% endif %} 
+</div>
+  
+{% endblock %}

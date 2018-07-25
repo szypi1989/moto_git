@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+{% block title %}
+Auto giełda 
+{% endblock %}
+{% block contents %}
+<div class="alert alert-danger">
+<p>Podana strona nie istnieje!</p></strong> 
+{% if app.request.attributes.get('_route') == 'view' %}
+<p>W bazie danych nie istnieje takie ogłoszenie</p>
+{% endif %}  
+{% if parameters.errors is defined  %}
+    
+{% else %}  
+{% endif %}    
+</div>
+{% endblock %}
