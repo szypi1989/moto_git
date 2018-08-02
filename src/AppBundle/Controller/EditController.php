@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Service\ValidRequest;
 use AppBundle\Service\CarsEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,42 +45,27 @@ use Symfony\Component\Validator;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Collection;
+use Doctrine\ORM\EntityManager;
 use AppBundle\Form\Type\EditType;
 use AppBundle\Form\Type\AppendType;
+use AppBundle\Service\Edit\Append\PushSql;
 class EditController extends Controller
 {    
      /**
      * @Route("/append", name="append")
      * @Template()
      */
-    public function appendAction(Request $request,ValidRequest $validrequest)
+    public function appendAction(Request $request,ValidRequest $validrequest,EntityManager $em,PushSql $pushsql)
     {
     //<building information to create a form
-   //     echo ini_get('upload_max_filesize');  
-       //  echo ini_get('post_max_size');
-    for ($i = 0; $i <= 9; $i++) {
-    $array_it[]=$i;
-    }
-    $array_year[NULL]=NULL;
-    for ($i = 2017; $i >= 1920; $i--) {   
-    $array_year[$i]=$i;
-    }
-    $array_mark=array();
-    $em = $this->getDoctrine()->getManager();
-    $qb = $em->createQueryBuilder();
-    $qb->select('c.mark')
-    ->from('AppBundle:Carslist', 'c');  
-    $entities=$qb->distinct()->getQuery()->getResult();
-        foreach ($entities as $prop) {
-        $array_mark[$prop['mark']]=$prop['mark'];
-        }
     //downloading the logged-in user
     $user_active = $this->get('security.token_storage')->getToken()->getUser();
     //>< creating a form for adding an advertisement
     $append = new Append();
     $form = $this->createForm(AppendType::class, $append, array(
             'action' => $this->generateUrl('append'),
-        ));
+    ));
+    ///$ddd=$this->container->get('pushsql');
     //>< performing actions after sending the form
     if ($request->getMethod() == 'POST'){
         //<< when the data sent corresponds to the size of the maximum data size limit,
@@ -97,25 +83,9 @@ class EditController extends Controller
         }
         //>>
         //<< creating shares after error-free validation
-        if(count($val_errors)==0){      
-        $year_ln=2018-(integer)$request->request->get('form')['year']; 
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('AppBundle:Cars')->findAll();
-        $count_before=count($entities);
-        $cars = new Cars();
-        $cars->setModel($request->request->get('form')['model']);
-        $cars->setMark($request->request->get('form')['mark']);
-        $cars->setPrice((integer)$request->request->get('form')['price']);
-        $cars->setPower((integer)$request->request->get('form')['power']);
-        $cars->setEngine($request->request->get('form')['enginea'].".".$request->request->get('form')['engineb']);
-        $cars->setEnginetype($request->request->get('form')['enginetype']);
-        $cars->setYear($request->request->get('form')['year']);
-        $cars->setBodytype($request->request->get('form')['bodytype']);
-        $cars->setYear($year_ln);
-        $cars->setDescription($request->request->get('form')['description']);
-        $cars->setId_user($user_active->getId());
-        $em->persist($cars);
-        $em->flush();
+        if(count($val_errors)==0){ 
+        //push data request to table cars database    
+        $pushsql->pushCars();
         $entities = $em->getRepository('AppBundle:Cars')->findAll();
             try {
             rename($request->files->get('form')['avatar']->getPathname(), "../web/images/".count($entities).'.jpg'); 
