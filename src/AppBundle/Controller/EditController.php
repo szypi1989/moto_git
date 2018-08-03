@@ -57,7 +57,7 @@ class EditController extends Controller {
      * @Route("/append", name="append")
      * @Template()
      */
-    public function appendAction(Request $request, ValidRequest $validrequest, EntityManager $em, PushSql $pushsql,ImageMd $imagemd) {
+    public function appendAction(Request $request, ValidRequest $validrequest, EntityManager $em, PushSql $pushsql, ImageMd $imagemd) {
         //<building information to create a form
         //downloading the logged-in user
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
@@ -76,42 +76,15 @@ class EditController extends Controller {
             if (count($val_errors) == 0) {
                 //push data request to table cars database    
                 $pushsql->pushCars();
-                $image->moveFile();
+                //moves the file after defect
+                $imagemd->moveFile();
                 //<<< creating and sorting photo files
-                if (isset($request->files->get('form')['image'])) {
-                    if (!is_dir("../web/images/" . count($entities))) {
-                        if (mkdir("../web/images/" . count($entities), 777)) {
-                            chmod("../web/images/" . count($entities), 0777);
-                            $arr = $request->files->get('form')['image'];
-                            foreach ($arr as $key => $value) {
-                                try {
-                                    if (!empty($value)) {
-                                        rename($value->getPathname(), "../web/images/" . count($entities) . "/" . $key . '.jpg');
-                                    }
-                                } catch (Exception $e) {
-                                    $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
-                                }
-                            }
-                        } else {
-                            $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
-                        }
-                    } else {
-                        chmod("../web/images/" . count($entities), 0777);
-                        $arr = $request->files->get('form')['image'];
-                        foreach ($arr as $key => $value) {
-                            try {
-                                if (!empty($value)) {
-                                    rename($value->getPathname(), "../web/images/" . count($entities) . "/" . $key . '.jpg');
-                                }
-                            } catch (Exception $e) {
-                                $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
-                            }
-                        }
-                    }
-                }
+                $imagemd->sortFile();
                 //>>>
-                // variable {success} with the value {false} means the form with errors of defects
-                if (isset($val_errors['upload']['fail'])) {
+                //variable {success} with the value {false} means the form with errors of defects
+                //Checking if the application did not make any mistakes
+                if ($imagemd->isErrors()) {
+                    $val_errors = $imagemd->getErrors();
                     return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors, 'id_message' => count($entities)));
                 }
                 return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'id_message' => count($entities)));

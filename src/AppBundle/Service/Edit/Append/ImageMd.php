@@ -13,8 +13,7 @@ class ImageMd {
     private $requestStack;
     protected $user_active;
     protected $container;
-    private $requestStack;
-    public $errmove = false;
+    public $errmove = array();
 
     public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container) {
         $this->entityManager = $em;
@@ -29,7 +28,7 @@ class ImageMd {
         try {
             rename($this->requestStack->getCurrentRequest()->files->get('form')['avatar']->getPathname(), "../web/images/" . count($entities) . '.jpg');
         } catch (Exception $e) {
-            $this->errmove = true;
+            $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
         }
     }
 
@@ -45,11 +44,11 @@ class ImageMd {
                                 rename($value->getPathname(), "../web/images/" . count($entities) . "/" . $key . '.jpg');
                             }
                         } catch (Exception $e) {
-                            $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
+                            $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
                         }
                     }
                 } else {
-                    $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
+                    $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
                 }
             } else {
                 chmod("../web/images/" . count($entities), 0777);
@@ -60,11 +59,22 @@ class ImageMd {
                             rename($value->getPathname(), "../web/images/" . count($entities) . "/" . $key . '.jpg');
                         }
                     } catch (Exception $e) {
-                        $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
+                        $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
                     }
                 }
             }
         }
+    }
+
+    public function isErrors() {
+        if (in_array(true, $this->errmove)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getErrors() {
+        return $this->errmove;
     }
 
 }

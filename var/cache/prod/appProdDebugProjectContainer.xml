@@ -420,6 +420,11 @@
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
     </service>
     <service id="AppBundle\Service\CarsEvent" class="AppBundle\Service\CarsEvent" public="false" autowire="true" autoconfigure="true"/>
+    <service id="AppBundle\Service\Edit\Append\ImageMd" class="AppBundle\Service\Edit\Append\ImageMd" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="service_container"/>
+    </service>
     <service id="AppBundle\Service\Edit\Append\PushSql" class="AppBundle\Service\Edit\Append\PushSql" public="false" autowire="true" autoconfigure="true">
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
       <argument type="service" id="request_stack"/>
@@ -444,7 +449,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id="service_locator.71660440c8f9194b5ca83c1b6c5559ba"/>
+      <argument type="service" id="service_locator.35bc612d37f3b74f29163b04d5516086"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -595,7 +600,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer" unlazy="1"/>
       <argument>KvJej86MX3</argument>
       <argument>0</argument>
-      <argument>m0av76MXWhbog-ihHCNDZB</argument>
+      <argument>Y7BdO9EZky3jAZNBInjtpW</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -605,7 +610,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>oX3SMKoQqY</argument>
       <argument>0</argument>
-      <argument>m0av76MXWhbog-ihHCNDZB</argument>
+      <argument>Y7BdO9EZky3jAZNBInjtpW</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -615,7 +620,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>BmzM66LJW9</argument>
       <argument>0</argument>
-      <argument>m0av76MXWhbog-ihHCNDZB</argument>
+      <argument>Y7BdO9EZky3jAZNBInjtpW</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -625,7 +630,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>HGhZMBaGFm</argument>
       <argument>0</argument>
-      <argument>m0av76MXWhbog-ihHCNDZB</argument>
+      <argument>Y7BdO9EZky3jAZNBInjtpW</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -635,7 +640,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>m0av76MXWhbog-ihHCNDZB</argument>
+      <argument>Y7BdO9EZky3jAZNBInjtpW</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -645,7 +650,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>m0av76MXWhbog-ihHCNDZB</argument>
+      <argument>Y7BdO9EZky3jAZNBInjtpW</argument>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
@@ -2768,12 +2773,12 @@
     </service>
     <service id="security.authentication.listener.anonymous.main" class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
       <argument type="service" id="security.token_storage"/>
-      <argument>5b62f7646933c5.59265314</argument>
+      <argument>5b6460625dd1e5.00773317</argument>
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
       <argument type="service" id="security.authentication.manager"/>
     </service>
     <service id="security.authentication.provider.anonymous.main" class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-      <argument>5b62f7646933c5.59265314</argument>
+      <argument>5b6460625dd1e5.00773317</argument>
     </service>
     <service id="security.exception_listener.main" class="Symfony\Component\Security\Http\Firewall\ExceptionListener" public="false">
       <argument type="service" id="security.token_storage"/>
@@ -3876,10 +3881,11 @@
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
-    <service id="service_locator.ab00bd596eb8305ce7bac7ac7b689916" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.f81a4bec278bb03a32bbf80dd5c45b25" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="em" type="service" id="doctrine.orm.default_entity_manager"/>
+        <argument key="imagemd" type="service" id="AppBundle\Service\Edit\Append\ImageMd" on-invalid="ignore"/>
         <argument key="pushsql" type="service" id="AppBundle\Service\Edit\Append\PushSql" on-invalid="ignore"/>
         <argument key="validrequest" type="service" id="AppBundle\Service\ValidRequest" on-invalid="ignore"/>
       </argument>
@@ -3899,12 +3905,12 @@
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
-    <service id="service_locator.71660440c8f9194b5ca83c1b6c5559ba" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.35bc612d37f3b74f29163b04d5516086" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="AppBundle\Controller\EditController:appendAction" type="service" id="service_locator.ab00bd596eb8305ce7bac7ac7b689916"/>
+        <argument key="AppBundle\Controller\EditController:appendAction" type="service" id="service_locator.f81a4bec278bb03a32bbf80dd5c45b25"/>
         <argument key="AppBundle\Controller\EditController:editaddAction" type="service" id="service_locator.205b0f07a38a73ae822f5061b883cfde"/>
-        <argument key="AppBundle\Controller\EditController::appendAction" type="service" id="service_locator.ab00bd596eb8305ce7bac7ac7b689916"/>
+        <argument key="AppBundle\Controller\EditController::appendAction" type="service" id="service_locator.f81a4bec278bb03a32bbf80dd5c45b25"/>
         <argument key="AppBundle\Controller\EditController::editaddAction" type="service" id="service_locator.205b0f07a38a73ae822f5061b883cfde"/>
       </argument>
     </service>
