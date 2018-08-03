@@ -39,8 +39,4 @@ class PushSql
         $this->entityManager->persist($cars);
         $this->entityManager->flush();
     }
-    
-    public function pushder(){
-        echo "hwdp";
-    }
 }

@@ -1,46 +1,70 @@
 <?php
+
 namespace AppBundle\Service\Edit\Append;
+
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Cars;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-class PushSql
-{
+
+class ImageMd {
+
     protected $entityManager;
     private $requestStack;
     protected $user_active;
     protected $container;
-    
-    public function __construct(EntityManager $em,RequestStack $requestStack,ContainerInterface $container)
-    {
-    $this->entityManager = $em;
-    $this->requestStack = $requestStack;
-    $this->container = $container;
-    $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
+    private $requestStack;
+    public $errmove = false;
+
+    public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container) {
+        $this->entityManager = $em;
+        $this->requestStack = $requestStack;
+        $this->container = $container;
+        $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
     }
 
-    public function pushCars()
-    {
-        $year_ln=date("Y")-(integer)$this->requestStack->getCurrentRequest()->request->get('form')['year']; 
+    public function moveFile() {
+        $val_errors = null;
         $entities = $this->entityManager->getRepository('AppBundle:Cars')->findAll();
-        $count_before=count($entities);
-        $cars = new Cars();
-        $cars->setModel($this->requestStack->getCurrentRequest()->request->get('form')['model']);
-        $cars->setMark($this->requestStack->getCurrentRequest()->request->get('form')['mark']);
-        $cars->setPrice((integer)$this->requestStack->getCurrentRequest()->request->get('form')['price']);
-        $cars->setPower((integer)$this->requestStack->getCurrentRequest()->request->get('form')['power']);
-        $cars->setEngine($this->requestStack->getCurrentRequest()->request->get('form')['enginea'].".".$this->requestStack->getCurrentRequest()->request->get('form')['engineb']);
-        $cars->setEnginetype($this->requestStack->getCurrentRequest()->request->get('form')['enginetype']);
-        $cars->setYear($this->requestStack->getCurrentRequest()->request->get('form')['year']);
-        $cars->setBodytype($this->requestStack->getCurrentRequest()->request->get('form')['bodytype']);
-        $cars->setYear($year_ln);
-        $cars->setDescription($this->requestStack->getCurrentRequest()->request->get('form')['description']);
-        $cars->setId_user($this->user_active->getId());
-        $this->entityManager->persist($cars);
-        $this->entityManager->flush();
+        try {
+            rename($this->requestStack->getCurrentRequest()->files->get('form')['avatar']->getPathname(), "../web/images/" . count($entities) . '.jpg');
+        } catch (Exception $e) {
+            $this->errmove = true;
+        }
     }
-    
-    public function pushder(){
-        echo "hwdp";
+
+    public function sortFile() {
+        if (isset($this->requestStack->getCurrentRequest()->files->get('form')['image'])) {
+            if (!is_dir("../web/images/" . count($entities))) {
+                if (mkdir("../web/images/" . count($entities), 777)) {
+                    chmod("../web/images/" . count($entities), 0777);
+                    $arr = $this->requestStack->getCurrentRequest()->files->get('form')['image'];
+                    foreach ($arr as $key => $value) {
+                        try {
+                            if (!empty($value)) {
+                                rename($value->getPathname(), "../web/images/" . count($entities) . "/" . $key . '.jpg');
+                            }
+                        } catch (Exception $e) {
+                            $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
+                        }
+                    }
+                } else {
+                    $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
+                }
+            } else {
+                chmod("../web/images/" . count($entities), 0777);
+                $arr = $this->requestStack->getCurrentRequest()->files->get('form')['image'];
+                foreach ($arr as $key => $value) {
+                    try {
+                        if (!empty($value)) {
+                            rename($value->getPathname(), "../web/images/" . count($entities) . "/" . $key . '.jpg');
+                        }
+                    } catch (Exception $e) {
+                        $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
+                    }
+                }
+            }
+        }
     }
+
 }
