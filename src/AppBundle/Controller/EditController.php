@@ -49,7 +49,6 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Form\Type\EditType;
 use AppBundle\Form\Type\AppendType;
 use AppBundle\Service\Edit\Append\PushSql;
-use AppBundle\Service\Edit\Append\ImageMd;
 use AppBundle\Service\Edit\Edit\PushSqlE;
 use AppBundle\Service\Edit\Edit\ImageMdE;
 
@@ -59,7 +58,7 @@ class EditController extends Controller {
      * @Route("/append", name="append")
      * @Template()
      */
-    public function appendAction(Request $request, ValidRequest $validrequest, EntityManager $em, PushSql $pushsql, ImageMd $imagemd) {
+    public function appendAction(Request $request, ValidRequest $validrequest, EntityManager $em, PushSql $pushsql) {
         //<building information to create a form
         //downloading the logged-in user
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
@@ -79,14 +78,10 @@ class EditController extends Controller {
                 //push data request to table cars database  
                 //return object entity cars
                 $pushsqlres=$pushsql->pushCars();
-                //moves the file after defect
-                $imagemd->moveFile();
-                //<<< creating and sorting photo files
-                $imagemd->sortFile();
                 //>>>
                 //variable {success} with the value {false} means the form with errors of defects
                 //Checking if the application did not make any mistakes
-                if ($imagemd->isErrors()) {
+                if ($pushsql->getImagemd()->isErrors()) {
                     $val_errors = $imagemd->getErrors();
                     return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors, 'id_message' => $pushsqlres->getId()));
                 }

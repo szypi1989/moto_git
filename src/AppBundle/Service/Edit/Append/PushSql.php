@@ -43,12 +43,12 @@ class PushSql {
             } catch (Exception $ex) {
             return false;    
             }
-        $this->imagemd->CreateFileAwatar($cars>getId())->sortFile();
+        $this->imagemd->CreateImgMsg($cars->getId());
         return $cars;
     }
     
-    public function imagemd(){
-        
+    public function getImagemd(){
+    return  $this->imagemd;   
     }
         
 }

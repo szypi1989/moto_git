@@ -22,27 +22,32 @@ class ImageMd {
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
     }
 
-    public function CreateFileAwatar($id) {
+    public function CreateImgMsg($id) {
+        $this->CreateAwatar($id);
+        $this->CreateSortFilesImg($id);
+        return $this;
+    }
+
+    public function CreateAwatar($id) {
         $val_errors = null;
-        //$entities = $this->entityManager->getRepository('AppBundle:Cars')->findAll();
         try {
-            rename($this->requestStack->getCurrentRequest()->files->get('form')['avatar']->getPathname(), "../web/images/" .$id . '.jpg');
+            rename($this->requestStack->getCurrentRequest()->files->get('form')['avatar']->getPathname(), "../web/images/" . $id . '.jpg');
         } catch (Exception $e) {
             $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
         }
         return $this;
     }
 
-    public function sortFileImg() {
+    public function CreateSortFilesImg($id) {
         if (isset($this->requestStack->getCurrentRequest()->files->get('form')['image'])) {
-            if (!is_dir("../web/images/" . count($entities))) {
-                if (mkdir("../web/images/" . count($entities), 777)) {
-                    chmod("../web/images/" . count($entities), 0777);
+            if (!is_dir("../web/images/" . $id)) {
+                if (mkdir("../web/images/" . $id, 777)) {
+                    chmod("../web/images/" . $id, 0777);
                     $arr = $this->requestStack->getCurrentRequest()->files->get('form')['image'];
                     foreach ($arr as $key => $value) {
                         try {
                             if (!empty($value)) {
-                                rename($value->getPathname(), "../web/images/" . count($entities) . "/" . $key . '.jpg');
+                                rename($value->getPathname(), "../web/images/" . $id . "/" . $key . '.jpg');
                             }
                         } catch (Exception $e) {
                             $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
@@ -52,12 +57,12 @@ class ImageMd {
                     $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
                 }
             } else {
-                chmod("../web/images/" . count($entities), 0777);
+                chmod("../web/images/" . $id, 0777);
                 $arr = $this->requestStack->getCurrentRequest()->files->get('form')['image'];
                 foreach ($arr as $key => $value) {
                     try {
                         if (!empty($value)) {
-                            rename($value->getPathname(), "../web/images/" . count($entities) . "/" . $key . '.jpg');
+                            rename($value->getPathname(), "../web/images/" . $id . "/" . $key . '.jpg');
                         }
                     } catch (Exception $e) {
                         $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";

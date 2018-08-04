@@ -46,7 +46,6 @@ class appProdDebugProjectContainer extends Container
             'appbundle\\form\\type\\searchtype' => 'AppBundle\\Form\\Type\\SearchType',
             'appbundle\\listener\\inf_add_advert' => 'AppBundle\\Listener\\Inf_add_advert',
             'appbundle\\service\\autosynchronize' => 'AppBundle\\Service\\AutoSynchronize',
-            'appbundle\\service\\edit\\append\\imagemd' => 'AppBundle\\Service\\Edit\\Append\\ImageMd',
             'appbundle\\service\\edit\\append\\pushsql' => 'AppBundle\\Service\\Edit\\Append\\PushSql',
             'appbundle\\service\\edit\\edit\\imagemde' => 'AppBundle\\Service\\Edit\\Edit\\ImageMdE',
             'appbundle\\service\\edit\\edit\\pushsqle' => 'AppBundle\\Service\\Edit\\Edit\\PushSqlE',
@@ -70,7 +69,6 @@ class appProdDebugProjectContainer extends Container
             'AppBundle\\Form\\Type\\SearchType' => 'getAppBundle_Form_Type_SearchTypeService',
             'AppBundle\\Listener\\Inf_add_advert' => 'getAppBundle_Listener_InfAddAdvertService',
             'AppBundle\\Service\\AutoSynchronize' => 'getAppBundle_Service_AutoSynchronizeService',
-            'AppBundle\\Service\\Edit\\Append\\ImageMd' => 'getAppBundle_Service_Edit_Append_ImageMdService',
             'AppBundle\\Service\\Edit\\Append\\PushSql' => 'getAppBundle_Service_Edit_Append_PushSqlService',
             'AppBundle\\Service\\Edit\\Edit\\ImageMdE' => 'getAppBundle_Service_Edit_Edit_ImageMdEService',
             'AppBundle\\Service\\Edit\\Edit\\PushSqlE' => 'getAppBundle_Service_Edit_Edit_PushSqlEService',
@@ -264,8 +262,8 @@ class appProdDebugProjectContainer extends Container
             'sensio_framework_extra.view.guesser' => 'getSensioFrameworkExtra_View_GuesserService',
             'sensio_framework_extra.view.listener' => 'getSensioFrameworkExtra_View_ListenerService',
             'service_locator.0b88277842f683500a2520132e44b783' => 'getServiceLocator_0b88277842f683500a2520132e44b783Service',
+            'service_locator.ab00bd596eb8305ce7bac7ac7b689916' => 'getServiceLocator_Ab00bd596eb8305ce7bac7ac7b689916Service',
             'service_locator.e64d23c3bf770e2cf44b71643280668d' => 'getServiceLocator_E64d23c3bf770e2cf44b71643280668dService',
-            'service_locator.f81a4bec278bb03a32bbf80dd5c45b25' => 'getServiceLocator_F81a4bec278bb03a32bbf80dd5c45b25Service',
             'session' => 'getSessionService',
             'session.handler' => 'getSession_HandlerService',
             'session.save_listener' => 'getSession_SaveListenerService',
@@ -341,7 +339,6 @@ class appProdDebugProjectContainer extends Container
             'AppBundle\\Form\\Type\\SearchType' => true,
             'AppBundle\\Listener\\Inf_add_advert' => true,
             'AppBundle\\Service\\AutoSynchronize' => true,
-            'AppBundle\\Service\\Edit\\Append\\ImageMd' => true,
             'AppBundle\\Service\\Edit\\Append\\PushSql' => true,
             'AppBundle\\Service\\Edit\\Edit\\ImageMdE' => true,
             'AppBundle\\Service\\Edit\\Edit\\PushSqlE' => true,
@@ -389,8 +386,8 @@ class appProdDebugProjectContainer extends Container
             'security.user_checker' => true,
             'security.user_value_resolver' => true,
             'service_locator.0b88277842f683500a2520132e44b783' => true,
+            'service_locator.ab00bd596eb8305ce7bac7ac7b689916' => true,
             'service_locator.e64d23c3bf770e2cf44b71643280668d' => true,
-            'service_locator.f81a4bec278bb03a32bbf80dd5c45b25' => true,
             'session.storage.metadata_bag' => true,
             'swiftmailer.mailer.default.transport.eventdispatcher' => true,
             'templating.locator' => true,
@@ -642,7 +639,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getCache_SystemService()
     {
-        return $this->services['cache.system'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('KvJej86MX3', 0, 'TssgFTHIUBDKFMDhaSMrBA', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
+        return $this->services['cache.system'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('KvJej86MX3', 0, 'N3xoDxUFF514Qh5qCPu7aS', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
     }
 
     /**
@@ -2839,7 +2836,7 @@ class appProdDebugProjectContainer extends Container
         $v = new \Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler($f, $s, array(), $a);
         $v->setOptions(array('failure_path' => '/', 'login_path' => '/login', 'failure_forward' => false, 'failure_path_parameter' => '_failure_path'));
 
-        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($r, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => ${($_ = isset($this->services['fos_user.user_provider.username']) ? $this->services['fos_user.user_provider.username'] : $this->getFosUser_UserProvider_UsernameService()) && false ?: '_'}), 'main', $a, $c, $d), 2 => $t, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $g, ${($_ = isset($this->services['security.authentication.session_strategy']) ? $this->services['security.authentication.session_strategy'] : $this->getSecurity_Authentication_SessionStrategyService()) && false ?: '_'}, $s, 'main', $u, $v, array('check_path' => '/login_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'csrf_token_id' => 'authenticate', 'post_only' => true), $a, $c, ${($_ = isset($this->services['security.csrf.token_manager']) ? $this->services['security.csrf.token_manager'] : $this->get('security.csrf.token_manager')) && false ?: '_'}), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '5b657d8b4d7917.50275020', $a, $g), 5 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, ${($_ = isset($this->services['debug.security.access.decision_manager']) ? $this->services['debug.security.access.decision_manager'] : $this->getDebug_Security_Access_DecisionManagerService()) && false ?: '_'}, $r, $g)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $d, $s, 'main', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $s, '/login', false), NULL, NULL, $a, false), new \Symfony\Bundle\SecurityBundle\Security\FirewallConfig('main', 'security.user_checker', 'security.request_matcher.a64d671f18e5575531d76c1d1154fdc4476cb8a79c02ed7a3469178c6d7b96b5ed4e60db', true, false, 'fos_user.user_provider.username', 'main', 'security.authentication.form_entry_point.main', NULL, NULL, array(0 => 'logout', 1 => 'form_login', 2 => 'anonymous')));
+        return $this->services['security.firewall.map.context.main'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => new \Symfony\Component\Security\Http\Firewall\ChannelListener($r, new \Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint(80, 443), $a), 1 => new \Symfony\Component\Security\Http\Firewall\ContextListener($b, array(0 => ${($_ = isset($this->services['fos_user.user_provider.username']) ? $this->services['fos_user.user_provider.username'] : $this->getFosUser_UserProvider_UsernameService()) && false ?: '_'}), 'main', $a, $c, $d), 2 => $t, 3 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($b, $g, ${($_ = isset($this->services['security.authentication.session_strategy']) ? $this->services['security.authentication.session_strategy'] : $this->getSecurity_Authentication_SessionStrategyService()) && false ?: '_'}, $s, 'main', $u, $v, array('check_path' => '/login_check', 'use_forward' => false, 'require_previous_session' => true, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'csrf_token_id' => 'authenticate', 'post_only' => true), $a, $c, ${($_ = isset($this->services['security.csrf.token_manager']) ? $this->services['security.csrf.token_manager'] : $this->get('security.csrf.token_manager')) && false ?: '_'}), 4 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($b, '5b658cc3603431.37470891', $a, $g), 5 => new \Symfony\Component\Security\Http\Firewall\AccessListener($b, ${($_ = isset($this->services['debug.security.access.decision_manager']) ? $this->services['debug.security.access.decision_manager'] : $this->getDebug_Security_Access_DecisionManagerService()) && false ?: '_'}, $r, $g)), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($b, $d, $s, 'main', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($f, $s, '/login', false), NULL, NULL, $a, false), new \Symfony\Bundle\SecurityBundle\Security\FirewallConfig('main', 'security.user_checker', 'security.request_matcher.a64d671f18e5575531d76c1d1154fdc4476cb8a79c02ed7a3469178c6d7b96b5ed4e60db', true, false, 'fos_user.user_provider.username', 'main', 'security.authentication.form_entry_point.main', NULL, NULL, array(0 => 'logout', 1 => 'form_login', 2 => 'anonymous')));
     }
 
     /**
@@ -4127,25 +4124,6 @@ class appProdDebugProjectContainer extends Container
     }
 
     /**
-     * Gets the 'AppBundle\Service\Edit\Append\ImageMd' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * This service is private.
-     * If you want to be able to request this service from the container directly,
-     * make it public, otherwise you might end up with broken code.
-     *
-     * This service is autowired.
-     *
-     * @return \AppBundle\Service\Edit\Append\ImageMd A AppBundle\Service\Edit\Append\ImageMd instance
-     */
-    protected function getAppBundle_Service_Edit_Append_ImageMdService()
-    {
-        return $this->services['AppBundle\Service\Edit\Append\ImageMd'] = new \AppBundle\Service\Edit\Append\ImageMd(${($_ = isset($this->services['doctrine.orm.default_entity_manager']) ? $this->services['doctrine.orm.default_entity_manager'] : $this->get('doctrine.orm.default_entity_manager')) && false ?: '_'}, ${($_ = isset($this->services['request_stack']) ? $this->services['request_stack'] : $this->get('request_stack')) && false ?: '_'}, $this);
-    }
-
-    /**
      * Gets the 'AppBundle\Service\Edit\Append\PushSql' service.
      *
      * This service is shared.
@@ -4161,7 +4139,10 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getAppBundle_Service_Edit_Append_PushSqlService()
     {
-        return $this->services['AppBundle\Service\Edit\Append\PushSql'] = new \AppBundle\Service\Edit\Append\PushSql(${($_ = isset($this->services['doctrine.orm.default_entity_manager']) ? $this->services['doctrine.orm.default_entity_manager'] : $this->get('doctrine.orm.default_entity_manager')) && false ?: '_'}, ${($_ = isset($this->services['request_stack']) ? $this->services['request_stack'] : $this->get('request_stack')) && false ?: '_'}, $this);
+        $a = ${($_ = isset($this->services['doctrine.orm.default_entity_manager']) ? $this->services['doctrine.orm.default_entity_manager'] : $this->get('doctrine.orm.default_entity_manager')) && false ?: '_'};
+        $b = ${($_ = isset($this->services['request_stack']) ? $this->services['request_stack'] : $this->get('request_stack')) && false ?: '_'};
+
+        return $this->services['AppBundle\Service\Edit\Append\PushSql'] = new \AppBundle\Service\Edit\Append\PushSql($a, $b, $this, new \AppBundle\Service\Edit\Append\ImageMd($a, $b, $this));
     }
 
     /**
@@ -4311,11 +4292,11 @@ class appProdDebugProjectContainer extends Container
     protected function getArgumentResolver_ServiceService()
     {
         return $this->services['argument_resolver.service'] = new \Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver(new \Symfony\Component\DependencyInjection\ServiceLocator(array('AppBundle\\Controller\\EditController:appendAction' => function () {
-            return ${($_ = isset($this->services['service_locator.f81a4bec278bb03a32bbf80dd5c45b25']) ? $this->services['service_locator.f81a4bec278bb03a32bbf80dd5c45b25'] : $this->getServiceLocator_F81a4bec278bb03a32bbf80dd5c45b25Service()) && false ?: '_'};
+            return ${($_ = isset($this->services['service_locator.ab00bd596eb8305ce7bac7ac7b689916']) ? $this->services['service_locator.ab00bd596eb8305ce7bac7ac7b689916'] : $this->getServiceLocator_Ab00bd596eb8305ce7bac7ac7b689916Service()) && false ?: '_'};
         }, 'AppBundle\\Controller\\EditController:editaddAction' => function () {
             return ${($_ = isset($this->services['service_locator.0b88277842f683500a2520132e44b783']) ? $this->services['service_locator.0b88277842f683500a2520132e44b783'] : $this->getServiceLocator_0b88277842f683500a2520132e44b783Service()) && false ?: '_'};
         }, 'AppBundle\\Controller\\EditController::appendAction' => function () {
-            return ${($_ = isset($this->services['service_locator.f81a4bec278bb03a32bbf80dd5c45b25']) ? $this->services['service_locator.f81a4bec278bb03a32bbf80dd5c45b25'] : $this->getServiceLocator_F81a4bec278bb03a32bbf80dd5c45b25Service()) && false ?: '_'};
+            return ${($_ = isset($this->services['service_locator.ab00bd596eb8305ce7bac7ac7b689916']) ? $this->services['service_locator.ab00bd596eb8305ce7bac7ac7b689916'] : $this->getServiceLocator_Ab00bd596eb8305ce7bac7ac7b689916Service()) && false ?: '_'};
         }, 'AppBundle\\Controller\\EditController::editaddAction' => function () {
             return ${($_ = isset($this->services['service_locator.0b88277842f683500a2520132e44b783']) ? $this->services['service_locator.0b88277842f683500a2520132e44b783'] : $this->getServiceLocator_0b88277842f683500a2520132e44b783Service()) && false ?: '_'};
         })));
@@ -4371,7 +4352,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getCache_AnnotationsService($lazyLoad = true)
     {
-        return $this->services['cache.annotations'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('HGhZMBaGFm', 0, 'TssgFTHIUBDKFMDhaSMrBA', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
+        return $this->services['cache.annotations'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('HGhZMBaGFm', 0, 'N3xoDxUFF514Qh5qCPu7aS', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
     }
 
     /**
@@ -4390,7 +4371,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getCache_ValidatorService($lazyLoad = true)
     {
-        return $this->services['cache.validator'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('oX3SMKoQqY', 0, 'TssgFTHIUBDKFMDhaSMrBA', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
+        return $this->services['cache.validator'] = \Symfony\Component\Cache\Adapter\AbstractAdapter::createSystemCache('oX3SMKoQqY', 0, 'N3xoDxUFF514Qh5qCPu7aS', (__DIR__.'/pools'), ${($_ = isset($this->services['monolog.logger.cache']) ? $this->services['monolog.logger.cache'] : $this->get('monolog.logger.cache', ContainerInterface::NULL_ON_INVALID_REFERENCE)) && false ?: '_'});
     }
 
     /**
@@ -4811,7 +4792,7 @@ class appProdDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_Provider_Anonymous_MainService()
     {
-        return $this->services['security.authentication.provider.anonymous.main'] = new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('5b657d8b4d7917.50275020');
+        return $this->services['security.authentication.provider.anonymous.main'] = new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('5b658cc3603431.37470891');
     }
 
     /**
@@ -4997,6 +4978,29 @@ class appProdDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'service_locator.ab00bd596eb8305ce7bac7ac7b689916' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * This service is private.
+     * If you want to be able to request this service from the container directly,
+     * make it public, otherwise you might end up with broken code.
+     *
+     * @return \Symfony\Component\DependencyInjection\ServiceLocator A Symfony\Component\DependencyInjection\ServiceLocator instance
+     */
+    protected function getServiceLocator_Ab00bd596eb8305ce7bac7ac7b689916Service()
+    {
+        return $this->services['service_locator.ab00bd596eb8305ce7bac7ac7b689916'] = new \Symfony\Component\DependencyInjection\ServiceLocator(array('em' => function () {
+            $f = function (\Doctrine\ORM\EntityManager $v) { return $v; }; return $f(${($_ = isset($this->services['doctrine.orm.default_entity_manager']) ? $this->services['doctrine.orm.default_entity_manager'] : $this->get('doctrine.orm.default_entity_manager')) && false ?: '_'});
+        }, 'pushsql' => function () {
+            $f = function (\AppBundle\Service\Edit\Append\PushSql $v = null) { return $v; }; return $f(${($_ = isset($this->services['AppBundle\Service\Edit\Append\PushSql']) ? $this->services['AppBundle\Service\Edit\Append\PushSql'] : $this->getAppBundle_Service_Edit_Append_PushSqlService()) && false ?: '_'});
+        }, 'validrequest' => function () {
+            $f = function (\AppBundle\Service\ValidRequest $v = null) { return $v; }; return $f(${($_ = isset($this->services['AppBundle\Service\ValidRequest']) ? $this->services['AppBundle\Service\ValidRequest'] : $this->getAppBundle_Service_ValidRequestService()) && false ?: '_'});
+        }));
+    }
+
+    /**
      * Gets the 'service_locator.e64d23c3bf770e2cf44b71643280668d' service.
      *
      * This service is shared.
@@ -5018,31 +5022,6 @@ class appProdDebugProjectContainer extends Container
             return ${($_ = isset($this->services['fragment.renderer.inline']) ? $this->services['fragment.renderer.inline'] : $this->get('fragment.renderer.inline')) && false ?: '_'};
         }, 'ssi' => function () {
             return ${($_ = isset($this->services['fragment.renderer.ssi']) ? $this->services['fragment.renderer.ssi'] : $this->get('fragment.renderer.ssi')) && false ?: '_'};
-        }));
-    }
-
-    /**
-     * Gets the 'service_locator.f81a4bec278bb03a32bbf80dd5c45b25' service.
-     *
-     * This service is shared.
-     * This method always returns the same instance of the service.
-     *
-     * This service is private.
-     * If you want to be able to request this service from the container directly,
-     * make it public, otherwise you might end up with broken code.
-     *
-     * @return \Symfony\Component\DependencyInjection\ServiceLocator A Symfony\Component\DependencyInjection\ServiceLocator instance
-     */
-    protected function getServiceLocator_F81a4bec278bb03a32bbf80dd5c45b25Service()
-    {
-        return $this->services['service_locator.f81a4bec278bb03a32bbf80dd5c45b25'] = new \Symfony\Component\DependencyInjection\ServiceLocator(array('em' => function () {
-            $f = function (\Doctrine\ORM\EntityManager $v) { return $v; }; return $f(${($_ = isset($this->services['doctrine.orm.default_entity_manager']) ? $this->services['doctrine.orm.default_entity_manager'] : $this->get('doctrine.orm.default_entity_manager')) && false ?: '_'});
-        }, 'imagemd' => function () {
-            $f = function (\AppBundle\Service\Edit\Append\ImageMd $v = null) { return $v; }; return $f(${($_ = isset($this->services['AppBundle\Service\Edit\Append\ImageMd']) ? $this->services['AppBundle\Service\Edit\Append\ImageMd'] : $this->getAppBundle_Service_Edit_Append_ImageMdService()) && false ?: '_'});
-        }, 'pushsql' => function () {
-            $f = function (\AppBundle\Service\Edit\Append\PushSql $v = null) { return $v; }; return $f(${($_ = isset($this->services['AppBundle\Service\Edit\Append\PushSql']) ? $this->services['AppBundle\Service\Edit\Append\PushSql'] : $this->getAppBundle_Service_Edit_Append_PushSqlService()) && false ?: '_'});
-        }, 'validrequest' => function () {
-            $f = function (\AppBundle\Service\ValidRequest $v = null) { return $v; }; return $f(${($_ = isset($this->services['AppBundle\Service\ValidRequest']) ? $this->services['AppBundle\Service\ValidRequest'] : $this->getAppBundle_Service_ValidRequestService()) && false ?: '_'});
         }));
     }
 
