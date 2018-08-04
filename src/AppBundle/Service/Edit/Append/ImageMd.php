@@ -22,17 +22,18 @@ class ImageMd {
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
     }
 
-    public function moveFile() {
+    public function CreateFileAwatar($id) {
         $val_errors = null;
-        $entities = $this->entityManager->getRepository('AppBundle:Cars')->findAll();
+        //$entities = $this->entityManager->getRepository('AppBundle:Cars')->findAll();
         try {
-            rename($this->requestStack->getCurrentRequest()->files->get('form')['avatar']->getPathname(), "../web/images/" . count($entities) . '.jpg');
+            rename($this->requestStack->getCurrentRequest()->files->get('form')['avatar']->getPathname(), "../web/images/" .$id . '.jpg');
         } catch (Exception $e) {
             $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
         }
+        return $this;
     }
 
-    public function sortFile() {
+    public function sortFileImg() {
         if (isset($this->requestStack->getCurrentRequest()->files->get('form')['image'])) {
             if (!is_dir("../web/images/" . count($entities))) {
                 if (mkdir("../web/images/" . count($entities), 777)) {
@@ -64,6 +65,7 @@ class ImageMd {
                 }
             }
         }
+        return $this;
     }
 
     public function isErrors() {

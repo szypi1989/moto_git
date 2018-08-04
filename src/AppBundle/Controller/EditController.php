@@ -50,6 +50,8 @@ use AppBundle\Form\Type\EditType;
 use AppBundle\Form\Type\AppendType;
 use AppBundle\Service\Edit\Append\PushSql;
 use AppBundle\Service\Edit\Append\ImageMd;
+use AppBundle\Service\Edit\Edit\PushSqlE;
+use AppBundle\Service\Edit\Edit\ImageMdE;
 
 class EditController extends Controller {
 
@@ -74,8 +76,9 @@ class EditController extends Controller {
             //>>
             //<< creating shares after error-free validation
             if (count($val_errors) == 0) {
-                //push data request to table cars database    
-                $pushsql->pushCars();
+                //push data request to table cars database  
+                //return object entity cars
+                $pushsqlres=$pushsql->pushCars();
                 //moves the file after defect
                 $imagemd->moveFile();
                 //<<< creating and sorting photo files
@@ -85,9 +88,9 @@ class EditController extends Controller {
                 //Checking if the application did not make any mistakes
                 if ($imagemd->isErrors()) {
                     $val_errors = $imagemd->getErrors();
-                    return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors, 'id_message' => count($entities)));
+                    return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors, 'id_message' => $pushsqlres->getId()));
                 }
-                return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'id_message' => count($entities)));
+                return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'id_message' => $pushsqlres->getId()));
                 //>>
             } else {
                 return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors));
@@ -103,7 +106,7 @@ class EditController extends Controller {
      * @Route("/editadd/{id_add}", name="edit_add")
      * @Template()
      */
-    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, Inf_add_advert $inf_add_advert) {
+    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, Inf_add_advert $inf_add_advert, PushSqlE $pushsql, ImageMdE $imagemd) {
         //action action very similar to controller action {appendAction}
         //Inf_add_advert = object listener event that sends an email confirming the update of the advertisement
         if (is_dir("../web/images/" . $id_add)) {
@@ -262,21 +265,6 @@ class EditController extends Controller {
             $arr_value[substr($pieces[$i], 1, -1)] = substr($pieces[$i], 1, -1);
         }
         return $arr_value;
-    }
-
-    function return_bytes($val) {
-        $val = trim($val);
-        $last = strtolower($val[strlen($val) - 1]);
-        $val = substr($val, 0, -1);
-        switch ($last) {
-            case 'g':
-                $val *= 1024;
-            case 'm':
-                $val *= 1024;
-            case 'k':
-                $val *= 1024;
-        }
-        return $val;
     }
 
 }
