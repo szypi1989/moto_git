@@ -7,6 +7,8 @@ use AppBundle\Entity\Cars;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Service\Edit\Append\ImageMd;
+
+// class creates actions that add an advertisement to the database
 class PushSql {
 
     protected $entityManager;
@@ -15,14 +17,16 @@ class PushSql {
     protected $container;
     protected $imagemd;
 
-    public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container,ImageMd $imagemd) {
+    public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container, ImageMd $imagemd) {
         $this->entityManager = $em;
         $this->requestStack = $requestStack;
         $this->container = $container;
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
-        $this->imagemd=$imagemd;
+        $this->imagemd = $imagemd;
     }
 
+    // create actions from the request data that causes adding the announcement from dathch to the database
+    // use the imagmd class to create car photo files and verify them
     public function pushCars() {
         $year_ln = date("Y") - (integer) $this->requestStack->getCurrentRequest()->request->get('form')['year'];
         $cars = new Cars();
@@ -38,17 +42,19 @@ class PushSql {
         $cars->setDescription($this->requestStack->getCurrentRequest()->request->get('form')['description']);
         $cars->setId_user($this->user_active->getId());
         $this->entityManager->persist($cars);
-            try {
-            $this->entityManager->flush();   
-            } catch (Exception $ex) {
-            return false;    
-            }
+        try {
+            $this->entityManager->flush();
+        } catch (Exception $ex) {
+            return false;
+        }
+        // create photos when adding data to the database correctly   
         $this->imagemd->CreateImgMsg($cars->getId());
         return $cars;
     }
-    
-    public function getImagemd(){
-    return  $this->imagemd;   
+
+   // gets the object responsible for uploading photos
+    public function getImagemd() {
+        return $this->imagemd;
     }
-        
+
 }
