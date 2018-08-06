@@ -22,5 +22,13 @@ class ImageMdE {
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
     }
 
-
+    public function getNameImages(){
+         if (is_dir("../web/images/" . $id_add)) {
+            $dir = "../web/images/" . $id_add;
+            $files1 = scandir($dir);
+            $files1 = array_slice($files1, 2);
+        } else {
+            $files1 = NULL;
+        }    
+    }
 }

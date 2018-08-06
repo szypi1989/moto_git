@@ -47,7 +47,7 @@ class AppendType extends AbstractType
         for ($i = 0; $i <= 9; $i++) {
         $this->build_vars["array_it"][]=$i;
         }
-        for ($i = 2017; $i >= 1920; $i--) {   
+        for ($i = (integer)date("Y"); $i >= 1920; $i--) {   
         $this->build_vars["array_year"][$i]=$i;
         } 
         $this->year_ln=(integer)$this->requestStack->getCurrentRequest()->request->get('form')['year']+1919; 
@@ -72,7 +72,7 @@ class AppendType extends AbstractType
             'choices' => $this->build_vars["array_it"],'data'=> ($this->requestStack->getCurrentRequest()->request->get('form')['engineb'])?$this->requestStack->getCurrentRequest()->request->get('form')['engineb']:''))  
             ->add('enginetype',ChoiceType::class,array('choices' =>$this->EnumPossibleValue('enginetype'),'data'=> ($this->requestStack->getCurrentRequest()->request->get('form')['enginetype'])?$this->requestStack->getCurrentRequest()->request->get('form')['enginetype']:''))
             ->add('year', ChoiceType::class,array(
-            'choices' => $this->build_vars["array_year"],'data'=> ($this->requestStack->getCurrentRequest()->request->get('form')['year'])?2018 - (integer)$this->requestStack->getCurrentRequest()->request->get('form')['year']:''))
+            'choices' => $this->build_vars["array_year"],'data'=> ($this->requestStack->getCurrentRequest()->request->get('form')['year'])?(integer)$this->requestStack->getCurrentRequest()->request->get('form')['year']:""))
             ->add('bodytype', ChoiceType::class,array('choices' =>$this->EnumPossibleValue('bodytype'),'data'=> ($this->requestStack->getCurrentRequest()->request->get('form')['bodytype'])?$this->requestStack->getCurrentRequest()->request->get('form')['bodytype']:''))
             ->add('description', TextType::class,array('data'=> ($this->requestStack->getCurrentRequest()->request->get('form')['description'])?$this->requestStack->getCurrentRequest()->request->get('form')['description']:'Super bryka'))
             ->add('avatar', FileType::class)

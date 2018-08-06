@@ -101,24 +101,16 @@ class EditController extends Controller {
      * @Route("/editadd/{id_add}", name="edit_add")
      * @Template()
      */
-    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, Inf_add_advert $inf_add_advert, PushSqlE $pushsql, ImageMdE $imagemd) {
+    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest,EntityManager $em,Inf_add_advert $inf_add_advert, PushSqlE $pushsql, ImageMdE $imagemd) {
         //action action very similar to controller action {appendAction}
         //Inf_add_advert = object listener event that sends an email confirming the update of the advertisement
-        if (is_dir("../web/images/" . $id_add)) {
-            $dir = "../web/images/" . $id_add;
-            $files1 = scandir($dir);
-            $files1 = array_slice($files1, 2);
-        } else {
-            $files1 = NULL;
-        }
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
-        if ($user_active == ".anon") {
-            return $this->forward('AppBundle:Default:Index');
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_USER')){
+             return $this->forward('AppBundle:Default:Index');
         }
-        $em = $this->getDoctrine()->getManager();
         $id_user_add = $em->getRepository('AppBundle:Cars')->findOneBy(array('id_user' => $user_active->getId(), 'id' => $id_add));
+        // get access if a specific ad is assigned to the user
         if ($id_user_add) {
-            $year_ln = (integer) $request->request->get('form')['year'] + 1919;
             $user_active = $this->get('security.token_storage')->getToken()->getUser();
             $append = new Append();
             $form = $this->createForm(EditType::class, $append, array(

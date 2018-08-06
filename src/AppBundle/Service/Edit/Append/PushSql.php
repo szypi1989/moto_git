@@ -28,7 +28,6 @@ class PushSql {
     // create actions from the request data that causes adding the announcement from dathch to the database
     // use the imagmd class to create car photo files and verify them
     public function pushCars() {
-        $year_ln = date("Y") - (integer) $this->requestStack->getCurrentRequest()->request->get('form')['year'];
         $cars = new Cars();
         $cars->setModel($this->requestStack->getCurrentRequest()->request->get('form')['model']);
         $cars->setMark($this->requestStack->getCurrentRequest()->request->get('form')['mark']);
@@ -38,7 +37,7 @@ class PushSql {
         $cars->setEnginetype($this->requestStack->getCurrentRequest()->request->get('form')['enginetype']);
         $cars->setYear($this->requestStack->getCurrentRequest()->request->get('form')['year']);
         $cars->setBodytype($this->requestStack->getCurrentRequest()->request->get('form')['bodytype']);
-        $cars->setYear($year_ln);
+        $cars->setYear($this->requestStack->getCurrentRequest()->request->get('form')['year']);
         $cars->setDescription($this->requestStack->getCurrentRequest()->request->get('form')['description']);
         $cars->setId_user($this->user_active->getId());
         $this->entityManager->persist($cars);
