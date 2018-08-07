@@ -77,12 +77,12 @@ class EditController extends Controller {
             if (count($val_errors) == 0) {
                 //push data request to table cars database  
                 //return object entity cars
-                $pushsqlres=$pushsql->pushCars();
+                $pushsqlres = $pushsql->pushCars();
                 //>>>
                 //variable {success} with the value {false} means the form with errors of defects
                 //Checking if the application did not make any mistakes
                 if ($pushsql->getImagemd()->isErrors()) {
-                    $val_errors = $imagemd->getErrors();
+                    $val_errors = $pushsql->getImagemd()->getErrors();
                     return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors, 'id_message' => $pushsqlres->getId()));
                 }
                 return $this->render('AppBundle:Edit:append.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'id_message' => $pushsqlres->getId()));
@@ -101,141 +101,47 @@ class EditController extends Controller {
      * @Route("/editadd/{id_add}", name="edit_add")
      * @Template()
      */
-    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest,EntityManager $em,Inf_add_advert $inf_add_advert, PushSqlE $pushsql, ImageMdE $imagemd) {
+    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, EntityManager $em, Inf_add_advert $inf_add_advert, PushSqlE $pushsql) {
         //action action very similar to controller action {appendAction}
         //Inf_add_advert = object listener event that sends an email confirming the update of the advertisement
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
-        if(!$this->get('security.authorization_checker')->isGranted('ROLE_USER')){
-             return $this->forward('AppBundle:Default:Index');
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->forward('AppBundle:Default:Index');
         }
         $id_user_add = $em->getRepository('AppBundle:Cars')->findOneBy(array('id_user' => $user_active->getId(), 'id' => $id_add));
         // get access if a specific ad is assigned to the user
         if ($id_user_add) {
-            $user_active = $this->get('security.token_storage')->getToken()->getUser();
+            //$files1 = $pushsql->getImagemd()->getNameImages();
             $append = new Append();
             $form = $this->createForm(EditType::class, $append, array(
                 'action' => $this->generateUrl('edit_add', array('id_add' => $id_add)),
             ));
             if ($request->getMethod() == 'POST') {
-                $size = $_SERVER['CONTENT_LENGTH'];
-                $maxPost = ini_get('post_max_size');
-                if ($this->return_bytes($maxPost) < $size) {
-                    $val_errors['post']['fail'] = 'Ograniczenia serwera. Wysyłane dane mają zbyt dużo pojemności.'
-                            . 'Nie można wysyłać na raz tyle plików. Zmniejsz ilość zdjęć ( doślesz je później). !!!'
-                            . 'Maksymalna zawartość wszystkich danych wysyłanych to ' . $this->return_bytes($maxPost) . ' bajtów';
-                } else {
-                    $val_errors = array();
-                    //services validrequest defect the request table by pattern 
-                    $val_errors = $validrequest->getErrors($request, "../web/json/validate_cars.json");
-                    //delete image checked
-                    if (isset($request->request->get('form')['deleteimage'])) {
-                        if (is_dir("../web/images/" . $id_add)) {
-                            $arr = $request->request->get('form')['deleteimage'];
-                            foreach ($arr as $key => $value) {
-                                unlink("../web/images/" . $id_add . "/" . $key . '.jpg');
-                            }
-                            $dir = "../web/images/" . $id_add;
-                            $files1 = scandir($dir);
-                            $files1 = array_slice($files1, 2);
-                            foreach ($files1 as $key => $value) {
-                                rename("../web/images/" . $id_add . "/" . $value, "../web/images/" . $id_add . "/" . ($key + 1) . '.jpg');
-                            }
-                            $dir = "../web/images/" . $id_add;
-                            $files1 = scandir($dir);
-                            $files1 = array_slice($files1, 2);
-                        }
-                    }
-                }
+                $val_errors = array();
+                //services validrequest defect the request table by pattern 
+                $val_errors = $validrequest->getErrors($request, "../web/json/validate_cars.json");
+                //<< creating shares after error-free validation
                 if (count($val_errors) == 0) {
-                    $year_ln = (integer) $request->request->get('form')['year'] + 1919;
-                    $em = $this->getDoctrine()->getManager();
-                    $cars = $em->getRepository('AppBundle:Cars')->findOneBy(array('id' => $id_add));
-                    if ($cars) {
-                        try {
-                            $cars->setModel($request->request->get('form')['model']);
-                            $cars->setMark($request->request->get('form')['mark']);
-                            $cars->setPrice((integer) $request->request->get('form')['price']);
-                            $cars->setPower((integer) $request->request->get('form')['power']);
-                            $cars->setEngine($request->request->get('form')['enginea'] . "." . $request->request->get('form')['engineb']);
-                            $cars->setEnginetype($request->request->get('form')['enginetype']);
-                            $cars->setYear($request->request->get('form')['year']);
-                            $cars->setBodytype($request->request->get('form')['bodytype']);
-                            $cars->setYear($year_ln);
-                            $cars->setDescription($request->request->get('form')['description']);
-                            $cars->setId_user($user_active->getId());
-                            $em->persist($cars);
-                            $em->flush();
-                            //The {EventDispatcher} component launches an event when the ad is properly edited,
-                            // retrieving the record object, which is sent to the service managed 
-                            // by the event that sends the confirmation emily.
-                            $dispatcher = new EventDispatcher();
-                            $dispatcher->addListener('appbundle.callusers.action', array($inf_add_advert, 'Call_raport'));
-                            $cars_event = new CarsEvent($cars);
-                            $dispatcher->dispatch('appbundle.callusers.action', $cars_event);
-                        } catch (Exception $e) {
-                            
-                        }
-                        $entities = $em->getRepository('AppBundle:Cars')->findAll();
-                        if (isset($request->files->get('form')['avatar'])) {
-                            try {
-                                rename($request->files->get('form')['avatar']->getPathname(), "../web/images/" . $id_add . '.jpg');
-                            } catch (Exception $e) {
-                                $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
-                            }
-                        }
+                    $pushsqlres = $pushsql->pushCars();
+                   // if ($cars) {
                         $arr = NULL;
-                        if (isset($request->files->get('form')['image'])) {
-                            if (!is_dir("../web/images/" . $id_add)) {
-                                if (mkdir("../web/images/" . $id_add, 777)) {
-                                    chmod("../web/images/" . $id_add, 0777);
-                                    $arr = $request->files->get('form')['image'];
-                                    $dir = "../web/images/" . $id_add;
-                                    $files1 = scandir($dir);
-                                    $files1 = array_slice($files1, 2);
-                                    foreach ($arr as $key => $value) {
-                                        try {
-                                            if (!empty($value)) {
-                                                rename($value->getPathname(), "../web/images/" . $id_add . "/" . ($key + 1 + count($files1)) . '.jpg');
-                                            }
-                                        } catch (Exception $e) {
-                                            $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
-                                        }
-                                    }
-                                } else {
-                                    $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
-                                }
-                            } else {
-                                $dir = "../web/images/" . $id_add;
-                                $files1 = scandir($dir);
-                                $files1 = array_slice($files1, 2);
-                                $arr = $request->files->get('form')['image'];
-                                foreach ($arr as $key => $value) {
-                                    try {
-                                        if (!empty($value)) {
-                                            rename($value->getPathname(), "../web/images/" . $id_add . "/" . ($key + 1 + count($files1)) . '.jpg');
-                                        }
-                                    } catch (Exception $e) {
-                                        $val_errors['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
-                                    }
-                                }
-                            }
-                        }
-
-                        if (@count($files1) == 0) {
-                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'append_image' => $arr));
+                        $val_errors = $pushsql->getImagemd()->getErrors();
+                        if (@count($pushsql->getImagemd()->files) == 0) {                        
+                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'append_image' => $request->files->get('form')['image']));
                         } else {
-                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'allow_image' => $files1, 'append_image' => $arr));
+                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'allow_image' => $pushsql->getImagemd()->files, 'append_image' => $request->files->get('form')['image']));
                         }
-                    }
+                   // }
                 } else {
-                    return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors, 'allow_image' => $files1));
+                    return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors, 'allow_image' => $pushsql->getImagemd()->getNameImages()));
                 }
+                //>
             }
 
-            if ($files1 == NULL) {
+            if ($pushsql->getImagemd()->getNameImages() == NULL) {
                 return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView()));
             } else {
-                return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'allow_image' => $files1));
+                return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'allow_image' => $pushsql->getImagemd()->getNameImages()));
             }
         }
         return $this->forward('AppBundle:Default:Index');
