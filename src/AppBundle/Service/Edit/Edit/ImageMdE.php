@@ -15,7 +15,7 @@ class ImageMdE {
     protected $container;
     protected $id_add;
     public $errmove = array();
-    public $files=array();
+    public $files = array();
 
     public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container) {
         $this->entityManager = $em;
@@ -82,21 +82,20 @@ class ImageMdE {
                 }
             }
         }
-        $this->files=$files1;
+        $this->files = $files1;
         return $this;
     }
 
     public function getNameImages() {
+        $files1 = NULL;
         if (is_dir("../web/images/" . $this->id_add)) {
             $dir = "../web/images/" . $this->id_add;
             $files1 = scandir($dir);
             $files1 = array_slice($files1, 2);
-        } else {
-            $files1 = NULL;
         }
-        return $files;
+        return $files1;
     }
-    
+
     // delete files by request data
     public function deleteImages() {
         if (isset($this->requestStack->getCurrentRequest()->request->get('form')['deleteimage'])) {
@@ -118,7 +117,7 @@ class ImageMdE {
         }
         return $files1;
     }
-    
+
     // check if there were any errors during the action
     public function isErrors() {
         if (in_array(true, $this->errmove)) {
