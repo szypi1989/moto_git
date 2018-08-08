@@ -35,7 +35,7 @@ class ImageMdE {
     public function CreateAwatar($id) {
         if (isset($this->requestStack->getCurrentRequest()->files->get('form')['avatar'])) {
             try {
-                rename($this->requestStack->getCurrentRequest()->get('form')['avatar']->getPathname(), "../web/images/" . $id . '.jpg');
+                rename($this->requestStack->getCurrentRequest()->files->get('form')['avatar']->getPathname(), "../web/images/" . $id . '.jpg');
             } catch (Exception $e) {
                 $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
             }
@@ -46,6 +46,7 @@ class ImageMdE {
     //creates a folder for the selected photo id and takes photos there that were 
     //sort files after uploady photos
     public function CreateSortFilesImg($id) {
+        $files1=null;
         if (isset($this->requestStack->getCurrentRequest()->files->get('form')['image'])) {
             if (!is_dir("../web/images/" . $id)) {
                 if (mkdir("../web/images/" . $id, 777)) {
@@ -81,6 +82,8 @@ class ImageMdE {
                     }
                 }
             }
+        }else{
+        $files1=$this->getNameImages();    
         }
         $this->files = $files1;
         return $this;
@@ -98,6 +101,7 @@ class ImageMdE {
 
     // delete files by request data
     public function deleteImages() {
+        $files1=NULL;
         if (isset($this->requestStack->getCurrentRequest()->request->get('form')['deleteimage'])) {
             if (is_dir("../web/images/" . $this->id_add)) {
                 $arr = $this->requestStack->getCurrentRequest()->request->get('form')['deleteimage'];

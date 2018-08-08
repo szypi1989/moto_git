@@ -104,6 +104,7 @@ class EditController extends Controller {
     public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, EntityManager $em, Inf_add_advert $inf_add_advert, PushSqlE $pushsql) {
         //action action very similar to controller action {appendAction}
         //Inf_add_advert = object listener event that sends an email confirming the update of the advertisement
+        //$pushsql->getImagemd()->getNameImages();
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->forward('AppBundle:Default:Index');
@@ -123,15 +124,14 @@ class EditController extends Controller {
                 //<< creating shares after error-free validation
                 if (count($val_errors) == 0) {
                     $pushsqlres = $pushsql->pushCars();
-                   // if ($cars) {
-                        $arr = NULL;
+                        $image_request = isset($request->files->get('form')['image'])?$request->files->get('form')['image']:NULL;
                         $val_errors = $pushsql->getImagemd()->getErrors();
-                        if (@count($pushsql->getImagemd()->files) == 0) {                        
-                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'append_image' => $request->files->get('form')['image']));
+                        if (@count($pushsql->getImagemd()->files) == 0) {  
+                            echo "tak";
+                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'append_image' => $image_request));
                         } else {
-                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'allow_image' => $pushsql->getImagemd()->files, 'append_image' => $request->files->get('form')['image']));
+                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'allow_image' => $pushsql->getImagemd()->files, 'append_image' => $image_request));
                         }
-                   // }
                 } else {
                     return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors, 'allow_image' => $pushsql->getImagemd()->getNameImages()));
                 }
