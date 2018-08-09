@@ -9,18 +9,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ImageMdE {
 
-    protected $entityManager;
     private $requestStack;
     protected $user_active;
-    protected $container;
     protected $id_add;
     public $errmove = array();
     public $files = array();
 
-    public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container) {
+    public function __construct(RequestStack $requestStack, ContainerInterface $container) {
         $this->entityManager = $em;
         $this->requestStack = $requestStack;
-        $this->container = $container;
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
         $this->id_add = $this->requestStack->getCurrentRequest()->attributes->get('id_add');
     }
