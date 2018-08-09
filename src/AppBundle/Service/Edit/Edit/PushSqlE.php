@@ -11,6 +11,7 @@ use Symfony\Component\EventDispatcher\Event;
 use AppBundle\Service\Edit\Edit\ImageMdE;
 use AppBundle\Listener\Inf_add_advert;
 use AppBundle\Service\CarsEvent;
+
 class PushSqlE {
 
     protected $entityManager;
@@ -20,15 +21,16 @@ class PushSqlE {
     protected $imagemd;
     protected $id_add;
     protected $infaddadvert;
+
+    //Inf_add_advert = object listener event that sends an email confirming the update of the advertisement
     public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container, ImageMdE $imagemd, Inf_add_advert $inf_add_advert) {
         $this->entityManager = $em;
         $this->requestStack = $requestStack;
         $this->container = $container;
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
         $this->imagemd = $imagemd;
-        $this->id_add=$this->requestStack->getCurrentRequest()->attributes->get('id_add');
-        $this->infaddadvert=$inf_add_advert;
-        
+        $this->id_add = $this->requestStack->getCurrentRequest()->attributes->get('id_add');
+        $this->infaddadvert = $inf_add_advert;
     }
 
     public function pushCars() {

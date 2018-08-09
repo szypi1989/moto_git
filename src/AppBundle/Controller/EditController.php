@@ -101,10 +101,8 @@ class EditController extends Controller {
      * @Route("/editadd/{id_add}", name="edit_add")
      * @Template()
      */
-    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, EntityManager $em, Inf_add_advert $inf_add_advert, PushSqlE $pushsql) {
+    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, EntityManager $em, PushSqlE $pushsql) {
         //action action very similar to controller action {appendAction}
-        //Inf_add_advert = object listener event that sends an email confirming the update of the advertisement
-        //$pushsql->getImagemd()->getNameImages();
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->forward('AppBundle:Default:Index');
@@ -112,7 +110,6 @@ class EditController extends Controller {
         $id_user_add = $em->getRepository('AppBundle:Cars')->findOneBy(array('id_user' => $user_active->getId(), 'id' => $id_add));
         // get access if a specific ad is assigned to the user
         if ($id_user_add) {
-            //$files1 = $pushsql->getImagemd()->getNameImages();
             $append = new Append();
             $form = $this->createForm(EditType::class, $append, array(
                 'action' => $this->generateUrl('edit_add', array('id_add' => $id_add)),
@@ -123,15 +120,17 @@ class EditController extends Controller {
                 $val_errors = $validrequest->getErrors($request, "../web/json/validate_cars.json");
                 //<< creating shares after error-free validation
                 if (count($val_errors) == 0) {
+                    //push data request to table cars database  
+                    //return object entity cars
                     $pushsqlres = $pushsql->pushCars();
-                        $image_request = isset($request->files->get('form')['image'])?$request->files->get('form')['image']:NULL;
-                        $val_errors = $pushsql->getImagemd()->getErrors();
-                        if (@count($pushsql->getImagemd()->files) == 0) {  
-                            echo "tak";
-                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'append_image' => $image_request));
-                        } else {
-                            return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'allow_image' => $pushsql->getImagemd()->files, 'append_image' => $image_request));
-                        }
+                    $image_request = isset($request->files->get('form')['image']) ? $request->files->get('form')['image'] : NULL;
+                    //get errors when uploading photos
+                    $val_errors = $pushsql->getImagemd()->getErrors();
+                    if (@count($pushsql->getImagemd()->files) == 0) {
+                        return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'append_image' => $image_request));
+                    } else {
+                        return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'true'), 'err_validate' => $val_errors, 'allow_image' => $pushsql->getImagemd()->files, 'append_image' => $image_request));
+                    }
                 } else {
                     return $this->render('AppBundle:Edit:editadd.html.twig', array('form' => $form->createView(), 'parameters' => array('success' => 'false'), 'err_validate' => $val_errors, 'allow_image' => $pushsql->getImagemd()->getNameImages()));
                 }
@@ -145,19 +144,6 @@ class EditController extends Controller {
             }
         }
         return $this->forward('AppBundle:Default:Index');
-    }
-
-    public function EnumPossibleValue($field = 'bodytype') {
-        $em = $this->getDoctrine()->getEntityManager();
-        $metadata = $em->getClassMetadata('AppBundle:Cars');
-        $myPropertyMapping = $metadata->getFieldMapping($field);
-        $value = substr($myPropertyMapping['columnDefinition'], 5, -1);
-        $pieces = explode(",", $value);
-        $arr_value;
-        for ($i = 0; $i < count($pieces); $i++) {
-            $arr_value[substr($pieces[$i], 1, -1)] = substr($pieces[$i], 1, -1);
-        }
-        return $arr_value;
     }
 
 }
