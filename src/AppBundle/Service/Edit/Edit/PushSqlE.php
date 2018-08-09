@@ -33,6 +33,8 @@ class PushSqlE {
         $this->infaddadvert = $inf_add_advert;
     }
 
+    // create actions from the request data that causes adding the announcement from dathch to the database
+    // use the imagmd class to create car photo files and verify them
     public function pushCars() {
         $cars = $this->entityManager->getRepository('AppBundle:Cars')->findOneBy(array('id' => $this->id_add));
         if ($cars) {
