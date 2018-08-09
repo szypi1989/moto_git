@@ -16,7 +16,6 @@ class ImageMdE {
     public $files = array();
 
     public function __construct(RequestStack $requestStack, ContainerInterface $container) {
-        $this->entityManager = $em;
         $this->requestStack = $requestStack;
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
         $this->id_add = $this->requestStack->getCurrentRequest()->attributes->get('id_add');
