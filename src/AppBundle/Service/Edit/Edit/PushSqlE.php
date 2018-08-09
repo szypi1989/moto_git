@@ -62,7 +62,9 @@ class PushSqlE {
             } catch (Exception $e) {
                 return false;
             }
+            // deleting photo files via request
             $this->imagemd->deleteImages();
+            // create photos when adding data to the database correctly   
             $this->imagemd->CreateImgMsg($cars->getId());
         }
     }
