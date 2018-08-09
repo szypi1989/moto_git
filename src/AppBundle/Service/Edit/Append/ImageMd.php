@@ -10,10 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 //class used for photo upload
 class ImageMd {
 
-    protected $entityManager;
     private $requestStack;
     protected $user_active;
-    protected $container;
     public $errmove = array();
 
     public function __construct(RequestStack $requestStack) {
