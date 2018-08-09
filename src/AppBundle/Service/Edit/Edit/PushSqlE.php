@@ -17,7 +17,6 @@ class PushSqlE {
     protected $entityManager;
     private $requestStack;
     protected $user_active;
-    protected $container;
     protected $imagemd;
     protected $id_add;
     protected $infaddadvert;
@@ -26,7 +25,6 @@ class PushSqlE {
     public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container, ImageMdE $imagemd, Inf_add_advert $inf_add_advert) {
         $this->entityManager = $em;
         $this->requestStack = $requestStack;
-        $this->container = $container;
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
         $this->imagemd = $imagemd;
         $this->id_add = $this->requestStack->getCurrentRequest()->attributes->get('id_add');
