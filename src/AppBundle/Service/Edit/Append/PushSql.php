@@ -14,13 +14,11 @@ class PushSql {
     protected $entityManager;
     private $requestStack;
     protected $user_active;
-    protected $container;
     protected $imagemd;
 
     public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container, ImageMd $imagemd) {
         $this->entityManager = $em;
         $this->requestStack = $requestStack;
-        $this->container = $container;
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
         $this->imagemd = $imagemd;
     }
