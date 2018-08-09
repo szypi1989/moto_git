@@ -206,11 +206,6 @@ class appProdDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBun
 
         elseif (0 === strpos($pathinfo, '/a')) {
             if (0 === strpos($pathinfo, '/ajax/isset')) {
-                // ajaxed
-                if (0 === strpos($pathinfo, '/ajax/issete') && preg_match('#^/ajax/issete/(?P<name>[^/]++)/(?P<value>[^/]++)$#s', $pathinfo, $matches)) {
-                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'ajaxed')), array (  '_controller' => 'AppBundle\\Controller\\AjaxController::issetAction',));
-                }
-
                 // ajaxede
                 if (preg_match('#^/ajax/isset/(?P<value>[^/]++)$#s', $pathinfo, $matches)) {
                     return $this->mergeDefaults(array_replace($matches, array('_route' => 'ajaxede')), array (  '_controller' => 'AppBundle\\Controller\\AjaxController::issetsAction',));
