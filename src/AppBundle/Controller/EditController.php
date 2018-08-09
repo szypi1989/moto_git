@@ -58,7 +58,7 @@ class EditController extends Controller {
      * @Route("/append", name="append")
      * @Template()
      */
-    public function appendAction(Request $request, ValidRequest $validrequest, EntityManager $em, PushSql $pushsql) {
+    public function appendAction(Request $request, ValidRequest $validrequest, PushSql $pushsql) {
         //<building information to create a form
         //downloading the logged-in user
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
