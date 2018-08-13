@@ -5,6 +5,7 @@ namespace AppBundle\Service\Defaults\Index;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Service\Defaults\Index\FetchPaginer;
 use Symfony\Component\HttpFoundation\RequestStack;
+
 class PushSearch {
 
     protected $entityManager;
@@ -13,10 +14,10 @@ class PushSearch {
     private $requestStack;
 
     public function __construct(EntityManager $em, RequestStack $requestStack, FetchPaginer $paginer) {
-
         $this->paginer = $paginer;
-        }
-        public function getTransSort(){
+    }
+
+    public function getTransSort() {
         $trans_sort = array(
             "year" => "rok produkcji",
             "price" => "cena",
@@ -28,10 +29,10 @@ class PushSearch {
             "power" => "moc"
         );
         return $trans_sort;
-
     }
-    public function getTransArr(){
-             $trans_arr = array(
+
+    public function getTransArr() {
+        $trans_arr = array(
             "yearfrom" => "rok od",
             "yearto" => "rok do",
             "pricefrom" => "cena od",
@@ -41,13 +42,11 @@ class PushSearch {
             "mark" => "marka",
             "bodytype" => "typ_nadwozia",
             "enginez" => "pojemność",
-        );   
-             return $trans_arr;
+        );
+        return $trans_arr;
     }
 
     public function getPagination() {
         return $this->paginer->createPagination();
     }
-    
-    
 }

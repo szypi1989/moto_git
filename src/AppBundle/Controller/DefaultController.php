@@ -19,7 +19,7 @@ class DefaultController extends Controller {
     public function indexAction(Request $request, PushSearch $pushsearch,EntityManager $em) {
         if ($request->getMethod() == 'POST') {
             // put search module
-            return array('pagination' => $pushsearch->getPagination(), 'filtr' => $array_par, "transfiltr" => $trans_arr, "transsort" => $trans_sort);
+            return array('pagination' => $pushsearch->getPagination(), 'filtr' => $pushsearch->paginer->FetchMsgSql->build_condition(), "transfiltr" => $pushsearch->getTransArr(), "transsort" => $pushsearch->getTransSort());
         } else {
             //append data post 
             if ($request->query->get('search') == "1") {

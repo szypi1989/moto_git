@@ -9,6 +9,7 @@ class FetchMsgSql {
     protected $entityManager;
     protected $qb;
     protected $parameters;
+    protected $array_par;
     private $requestStack;
 
     public function __construct(EntityManager $em, RequestStack $requestStack) {
