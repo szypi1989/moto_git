@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Service\Defaults\Index\FetchPaginer;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class PushSearch {
+class PutAdvert{
 
     protected $entityManager;
     protected $qb;

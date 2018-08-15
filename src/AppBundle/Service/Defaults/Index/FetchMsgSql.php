@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Service\Defaults\Index;
+
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\ORM\EntityManager;
 
@@ -20,7 +21,7 @@ class FetchMsgSql {
 
     public function getSql() {
         $this->qb->select('a')->from('AppBundle:Cars', 'a');
-        $this->qb->setParameters($this->build_condition());
+        (($this->requestStack->getCurrentRequest()->query->get('search') == "1") || ($this->requestStack->getCurrentRequest()->getRealMethod() == 'POST') ) ? $this->qb->setParameters($this->build_condition()) : NULL;
         $dql = $this->qb->getQuery()->getDQL();
         foreach ($this->qb->getParameters() as $index => $param) {
             $dql = str_replace(":" . $param->getName(), $param->getValue(), $dql);
@@ -31,6 +32,12 @@ class FetchMsgSql {
     }
 
     public function build_condition() {
+        $array_par = array();
+        $array_par = ($this->requestStack->getCurrentRequest()->getRealMethod() == 'POST') ? $this->putDataPost() : $this->pushDataGet();
+        return $array_par;
+    }
+
+    public function putDataPost() {
         $array_par = array();
         if ($this->requestStack->getCurrentRequest()->request->get('form')['yearfrom'] != NULL) {
             $this->qb->where('a.year  >= :yearfrom');
@@ -79,6 +86,60 @@ class FetchMsgSql {
                 $array_par['enginez'] = (integer) ($this->requestStack->getCurrentRequest()->request->get('form')['enginea'] . '.0');
             } else {
                 $array_par['enginez'] = ($this->requestStack->getCurrentRequest()->request->get('form')['enginea']) . '.' . ($this->requestStack->getCurrentRequest()->request->get('form')['engineb']);
+            }
+        }
+        return $array_par;
+    }
+
+    public function pushDataGet() {
+        $array_par = array();
+        if ($this->requestStack->getCurrentRequest()->query->get('yearfrom') != NULL) {
+            $this->qb->where('a.year  >= :yearfrom');
+            $array_par['yearfrom'] = ($this->requestStack->getCurrentRequest()->query->get('yearfrom'));
+        }
+        if ($this->requestStack->getCurrentRequest()->query->get('yearto') != NULL) {
+            $this->qb->andwhere('a.year <= :yearto');
+            $array_par['yearto'] = ($this->requestStack->getCurrentRequest()->query->get('yearto'));
+        }
+
+        if ($this->requestStack->getCurrentRequest()->query->get('pricefrom') != NULL) {
+            $this->qb->andwhere('a.price >= :pricefrom');
+            $array_par['pricefrom'] = trim($this->requestStack->getCurrentRequest()->query->get('pricefrom'));
+        }
+
+        if ($this->requestStack->getCurrentRequest()->query->get('priceto') != NULL) {
+            $this->qb->andwhere('a.price <= :priceto');
+            $array_par['priceto'] = trim($this->requestStack->getCurrentRequest()->query->get('priceto'));
+        }
+
+        if ($this->requestStack->getCurrentRequest()->query->get('enginetype') != NULL) {
+            $this->qb->andwhere('a.enginetype LIKE :enginetype');
+            $array_par['enginetype'] = ($this->requestStack->getCurrentRequest()->query->get('enginetype'));
+        }
+
+        if ($this->requestStack->getCurrentRequest()->query->get('model') != NULL) {
+            $this->qb->andwhere('a.model LIKE :model');
+            $array_par['model'] = trim($this->requestStack->getCurrentRequest()->query->get('model'));
+        }
+
+        if ($this->requestStack->getCurrentRequest()->query->get('mark') != NULL) {
+            $this->qb->andwhere('a.mark LIKE :mark');
+            $array_par['mark'] = trim($this->requestStack->getCurrentRequest()->query->get('mark'));
+        }
+
+        if ($this->requestStack->getCurrentRequest()->query->get('bodytype') != NULL) {
+            $this->qb->andwhere('a.bodytype LIKE :bodytype');
+            $array_par['bodytype'] = ($this->requestStack->getCurrentRequest()->query->get('bodytype'));
+        }
+
+        if (($this->requestStack->getCurrentRequest()->query->get('enginea') != '0') || ($this->requestStack->getCurrentRequest()->query->get('engineb') != '0')) {
+            $this->qb->andwhere('a.engine = :enginez');
+            if ((($this->requestStack->getCurrentRequest()->query->get('enginea')) == '0')) {
+                $array_par['enginez'] = ('0.' . $this->requestStack->getCurrentRequest()->query->get('engineb'));
+            } elseif ((($this->requestStack->getCurrentRequest()->query->get('engineb')) == '0')) {
+                $array_par['enginez'] = (integer) ($this->requestStack->getCurrentRequest()->query->get('enginea') . '.0');
+            } else {
+                $array_par['enginez'] = ($this->requestStack->getCurrentRequest()->query->get('enginea')) . '.' . ($this->requestStack->getCurrentRequest()->query->get('engineb'));
             }
         }
         return $array_par;
