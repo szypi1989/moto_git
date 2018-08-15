@@ -21,11 +21,11 @@ class DefaultController extends Controller {
             // put search module
             return array('pagination' => $putadvert->getPagination(), 'filtr' => $putadvert->paginer->FetchMsgSql->build_condition(), "transfiltr" => $putadvert->getTransArr(), "transsort" => $putadvert->getTransSort());
         } else {
-            //append data post 
+            // append data post 
             if ($request->query->get('search') == "1") {
                 return array('pagination' => $putadvert->getPagination(), 'filtr' => $putadvert->paginer->FetchMsgSql->build_condition(), "transfiltr" => $putadvert->getTransArr(), "transsort" => $putadvert->getTransSort());
             } else {
-                //put all data cars
+                // put all data cars
                 return array('pagination' => $putadvert->getPagination(), "transsort" => $putadvert->getTransSort());
             }
         }

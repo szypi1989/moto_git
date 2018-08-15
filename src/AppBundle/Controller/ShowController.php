@@ -52,6 +52,7 @@ class ShowController extends Controller
         $entities = $em->getRepository('AppBundle:Cars')->findAll(array('distinct' => true));
         return array('entities' => $entities);
     }
+    
     /**
     * @Route("/search")
     * @Template()

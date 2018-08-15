@@ -6,7 +6,9 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Service\Defaults\Index\FetchPaginer;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class PutAdvert{
+// class for the generation of car ads
+// generates the results of advertisements according to the data from the request table
+class PutAdvert {
 
     protected $entityManager;
     protected $qb;
@@ -46,7 +48,9 @@ class PutAdvert{
         return $trans_arr;
     }
 
+    // provide a paginer object, which is responsible for the generated results from the request table, which is associated with the object generating results from the database
     public function getPagination() {
         return $this->paginer->createPagination();
     }
+
 }

@@ -5,8 +5,9 @@ namespace AppBundle\Service\Defaults\Index;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\ORM\EntityManager;
 
+// class generates results based on data from the request table
 class FetchMsgSql {
-
+    
     protected $entityManager;
     protected $qb;
     protected $parameters;
@@ -19,14 +20,21 @@ class FetchMsgSql {
         $this->qb = $em->createQueryBuilder();
     }
 
+    // create results based on data from the request table
+    // converting data to the form of query
     public function getSql() {
         $this->qb->select('a')->from('AppBundle:Cars', 'a');
+        // starts the build_condition function if a query was sent from the searchAction action and the knppaginaton object uses the search function
+        // search == 1 -> when you view the pages by knppagination and knppagination is supposed to store the results
+        // search == 1 -> results from the request table are attached during the search engine save in the sortable_link.html view
         (($this->requestStack->getCurrentRequest()->query->get('search') == "1") || ($this->requestStack->getCurrentRequest()->getRealMethod() == 'POST') ) ? $this->qb->setParameters($this->build_condition()) : NULL;
         $dql = $this->qb->getQuery()->getDQL();
+        //< convert the dql object to the query form
         foreach ($this->qb->getParameters() as $index => $param) {
             $dql = str_replace(":" . $param->getName(), $param->getValue(), $dql);
             $dql = str_replace("LIKE " . $param->getValue(), "LIKE '" . $param->getValue() . "'", $dql);
         }
+        // >
         $query = $this->entityManager->createQuery($dql);
         return $query;
     }
@@ -37,6 +45,7 @@ class FetchMsgSql {
         return $array_par;
     }
 
+    // generates conditions from the $_POST request table
     public function putDataPost() {
         $array_par = array();
         if ($this->requestStack->getCurrentRequest()->request->get('form')['yearfrom'] != NULL) {
@@ -91,6 +100,8 @@ class FetchMsgSql {
         return $array_par;
     }
 
+    // generates conditions from the $ _GET request table
+    // the function is run when the knppagination object stores data from the search results
     public function pushDataGet() {
         $array_par = array();
         if ($this->requestStack->getCurrentRequest()->query->get('yearfrom') != NULL) {
