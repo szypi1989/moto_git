@@ -451,6 +451,18 @@
       <argument type="service" id="AppBundle\Service\Edit\Edit\ImageMdE"/>
       <argument type="service" id="AppBundle\Listener\Inf_add_advert"/>
     </service>
+    <service id="AppBundle\Service\Show\View\Advert" class="AppBundle\Service\Show\View\Advert" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="AppBundle\Service\Show\View\UserAdvert"/>
+    </service>
+    <service id="AppBundle\Service\Show\View\CarsInfo" class="AppBundle\Service\Show\View\CarsInfo" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="request_stack"/>
+    </service>
+    <service id="AppBundle\Service\Show\View\UserAdvert" class="AppBundle\Service\Show\View\UserAdvert" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument type="service" id="AppBundle\Service\Show\View\CarsInfo"/>
+    </service>
     <service id="AppBundle\Service\ValidRequest" class="AppBundle\Service\ValidRequest" public="false" autowire="true" autoconfigure="true">
       <argument type="service" id="validator"/>
     </service>
@@ -470,7 +482,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id="service_locator.46bf683a625ada692f5147b44dcabb7a"/>
+      <argument type="service" id="service_locator.e9fb5da697665af2580b94c605948ced"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -621,7 +633,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer" unlazy="1"/>
       <argument>KvJej86MX3</argument>
       <argument>0</argument>
-      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
+      <argument>gnsSw2kejMZkFrJQNPTTOU</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -631,7 +643,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>oX3SMKoQqY</argument>
       <argument>0</argument>
-      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
+      <argument>gnsSw2kejMZkFrJQNPTTOU</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -641,7 +653,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>BmzM66LJW9</argument>
       <argument>0</argument>
-      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
+      <argument>gnsSw2kejMZkFrJQNPTTOU</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -651,7 +663,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>HGhZMBaGFm</argument>
       <argument>0</argument>
-      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
+      <argument>gnsSw2kejMZkFrJQNPTTOU</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -661,7 +673,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
+      <argument>gnsSw2kejMZkFrJQNPTTOU</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -671,7 +683,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
+      <argument>gnsSw2kejMZkFrJQNPTTOU</argument>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
@@ -2794,12 +2806,12 @@
     </service>
     <service id="security.authentication.listener.anonymous.main" class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
       <argument type="service" id="security.token_storage"/>
-      <argument>5b74554ea66964.70590801</argument>
+      <argument>5b75a95e2e0e48.64529847</argument>
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
       <argument type="service" id="security.authentication.manager"/>
     </service>
     <service id="security.authentication.provider.anonymous.main" class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-      <argument>5b74554ea66964.70590801</argument>
+      <argument>5b75a95e2e0e48.64529847</argument>
     </service>
     <service id="security.exception_listener.main" class="Symfony\Component\Security\Http\Firewall\ExceptionListener" public="false">
       <argument type="service" id="security.token_storage"/>
@@ -3918,23 +3930,27 @@
         <argument key="validrequest" type="service" id="AppBundle\Service\ValidRequest" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id="service_locator.a99f2ba09ab95904a10be5a46499ca6c" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.348b76973bb379211fa5b01e2c8ea454" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument key="advert" type="service" id="AppBundle\Service\Show\View\Advert" on-invalid="ignore"/>
+      </argument>
     </service>
     <service id="service_locator.4f27295e1ee3cd81c185c2a4cb89efcf" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
-    <service id="service_locator.46bf683a625ada692f5147b44dcabb7a" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.e9fb5da697665af2580b94c605948ced" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="AppBundle\Controller\DefaultController:indexAction" type="service" id="service_locator.d2905503cc2b9ad3946e78db82dce5e4"/>
         <argument key="AppBundle\Controller\EditController:appendAction" type="service" id="service_locator.1a0e152085e36558ed2b72505c646041"/>
         <argument key="AppBundle\Controller\EditController:editaddAction" type="service" id="service_locator.b97da6c6d3a32e4f80f990fe2a8baf05"/>
+        <argument key="AppBundle\Controller\ShowController:viewAction" type="service" id="service_locator.348b76973bb379211fa5b01e2c8ea454"/>
         <argument key="AppBundle\Controller\DefaultController::indexAction" type="service" id="service_locator.d2905503cc2b9ad3946e78db82dce5e4"/>
         <argument key="AppBundle\Controller\EditController::appendAction" type="service" id="service_locator.1a0e152085e36558ed2b72505c646041"/>
         <argument key="AppBundle\Controller\EditController::editaddAction" type="service" id="service_locator.b97da6c6d3a32e4f80f990fe2a8baf05"/>
+        <argument key="AppBundle\Controller\ShowController::viewAction" type="service" id="service_locator.348b76973bb379211fa5b01e2c8ea454"/>
       </argument>
     </service>
     <service id="service_locator.20ccd3ddf0f78b2202986f924e362585" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">

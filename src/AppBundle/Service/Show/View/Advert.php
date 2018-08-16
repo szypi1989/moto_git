@@ -24,7 +24,7 @@ class Advert {
         if (is_dir("../web/images/" . $this->requestStack->getCurrentRequest()->attributes->get('page'))) {
             $dir = "../web/images/" . $this->requestStack->getCurrentRequest()->attributes->get('page');
             $imgcars = scandir($dir);
-            $imgcars = array_slice($files1, 2);
+            $imgcars = array_slice($imgcars, 2);
         } else {
             $imgcars = NULL;
         }
@@ -34,9 +34,10 @@ class Advert {
     public function generateView(){
         $view=array('userinfo' => $this->useradvert->getUserInfo(),);
         $view["userinfo"]=$this->useradvert->getUserInfo();
-        $view["entities"]=$this->getAvert()->carsdata;
+       // var_dump($this->getAdvert());
+        $view["entities"]=$this->getAdvert()->carsdata;
         $view["user"]=$this->useradvert->getUserAdd();
-        ($advert->getImg()!=NULL)?$view["gallery"]=$this->getImg():NULL;
+        ($this->getImg()!=NULL)?$view["gallery"]=$this->getImg():NULL;
         return $view;
     }
 

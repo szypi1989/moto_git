@@ -7,9 +7,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class CarsInfo {
 
     public $entityManager;
-
+    public $requestStack;
     public function __construct(EntityManager $em, RequestStack $requestStack) {
         $this->entityManager = $em;
+          $this->requestStack = $requestStack;
         $this->page = $this->requestStack->getCurrentRequest()->attributes->get('page');
     }
 

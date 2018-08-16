@@ -75,14 +75,8 @@ class ShowController extends Controller
      * @Route("/view/{page}", name="view", defaults={"page": "1"})
      * @Template()
      */
-    public function viewAction(Request $request,$page,$advert)
+    public function viewAction(Request $request,$page,Advert $advert)
     {
-      //  $images=$advert->getImg();
       return  $advert->generateView(); 
-      //  if($images==NULL){
-        //    return array('userinfo' => $advert->useradvert->getUserInfo(),'entities' => $advert->getAvert()->carsdata,'user' => $advert->useradvert->getUserAdd());   
-     //   }else{ 
-      //      return array('userinfo' => $advert->useradvert->getUserInfo(),'entities' => $advert->getAvert()->carsdata,'user' => $advert->useradvert->getUserAdd(),'gallery' => $images);
-      //  }
     }               
 }

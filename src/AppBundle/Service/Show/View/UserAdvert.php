@@ -10,7 +10,7 @@ class UserAdvert {
 
     protected $requestStack;
     protected $carsinfo;
-    protected $carsdata;
+    public $carsdata;
     protected $idinfo;
     public $entityManager;
 
