@@ -282,17 +282,9 @@ class appProdDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBun
             return array (  '_controller' => 'AppBundle\\Controller\\UserController::myaddAction',  '_route' => 'my_add',);
         }
 
-        if (0 === strpos($pathinfo, '/search')) {
-            // app_show_search
-            if ('/search' === $pathinfo) {
-                return array (  '_controller' => 'AppBundle\\Controller\\ShowController::searchAction',  '_route' => 'app_show_search',);
-            }
-
-            // app_test_search
-            if ('/searchs' === $pathinfo) {
-                return array (  '_controller' => 'AppBundle\\Controller\\TestController::searchAction',  '_route' => 'app_test_search',);
-            }
-
+        // app_show_search
+        if ('/search' === $pathinfo) {
+            return array (  '_controller' => 'AppBundle\\Controller\\ShowController::searchAction',  '_route' => 'app_show_search',);
         }
 
         // view

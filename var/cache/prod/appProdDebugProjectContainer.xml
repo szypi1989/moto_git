@@ -383,10 +383,6 @@
       <tag name="controller.service_arguments"/>
       <tag name="controller.service_arguments"/>
     </service>
-    <service id="AppBundle\Controller\TestController" class="AppBundle\Controller\TestController" autowire="true" autoconfigure="true">
-      <tag name="controller.service_arguments"/>
-      <tag name="controller.service_arguments"/>
-    </service>
     <service id="AppBundle\Controller\UserController" class="AppBundle\Controller\UserController" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="controller.service_arguments"/>
@@ -625,7 +621,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer" unlazy="1"/>
       <argument>KvJej86MX3</argument>
       <argument>0</argument>
-      <argument>ivWhHSu+lnJA4weBYhe+vw</argument>
+      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -635,7 +631,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>oX3SMKoQqY</argument>
       <argument>0</argument>
-      <argument>ivWhHSu+lnJA4weBYhe+vw</argument>
+      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -645,7 +641,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>BmzM66LJW9</argument>
       <argument>0</argument>
-      <argument>ivWhHSu+lnJA4weBYhe+vw</argument>
+      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -655,7 +651,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>HGhZMBaGFm</argument>
       <argument>0</argument>
-      <argument>ivWhHSu+lnJA4weBYhe+vw</argument>
+      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -665,7 +661,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>ivWhHSu+lnJA4weBYhe+vw</argument>
+      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -675,7 +671,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>ivWhHSu+lnJA4weBYhe+vw</argument>
+      <argument>0E7BTI-vipCWmUkDEZVgdf</argument>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
@@ -2798,12 +2794,12 @@
     </service>
     <service id="security.authentication.listener.anonymous.main" class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
       <argument type="service" id="security.token_storage"/>
-      <argument>5b7440787b4054.19065527</argument>
+      <argument>5b74554ea66964.70590801</argument>
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
       <argument type="service" id="security.authentication.manager"/>
     </service>
     <service id="security.authentication.provider.anonymous.main" class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-      <argument>5b7440787b4054.19065527</argument>
+      <argument>5b74554ea66964.70590801</argument>
     </service>
     <service id="security.exception_listener.main" class="Symfony\Component\Security\Http\Firewall\ExceptionListener" public="false">
       <argument type="service" id="security.token_storage"/>
@@ -3888,8 +3884,6 @@
     <service id="abstract.instanceof.AppBundle\Controller\ExceptionController" class="AppBundle\Controller\ExceptionController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.AppBundle\Controller\ShowController" class="AppBundle\Controller\ShowController" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.AppBundle\Controller\ShowController" class="AppBundle\Controller\ShowController" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.AppBundle\Controller\TestController" class="AppBundle\Controller\TestController" autowire="true" abstract="true"/>
-    <service id="abstract.instanceof.AppBundle\Controller\TestController" class="AppBundle\Controller\TestController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.AppBundle\Controller\UserController" class="AppBundle\Controller\UserController" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.AppBundle\Controller\UserController" class="AppBundle\Controller\UserController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Component\Form\FormTypeInterface.0.AppBundle\Form\Type\AppendType" class="AppBundle\Form\Type\AppendType" public="false" autowire="true" abstract="true"/>
