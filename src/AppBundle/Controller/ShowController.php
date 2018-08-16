@@ -29,7 +29,7 @@ class ShowController extends Controller {
      * @Template()
      */
     public function searchAction() {
-        //creating a form for the search engine
+        // creating a form for the search engine
         $search = new Search();
         $form = $this->createForm(SearchType::class, $search, array(
             'action' => $this->generateUrl('index'),
