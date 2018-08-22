@@ -1,0 +1,46 @@
+{% block contents %}
+    <div class="col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4><b>{% for imie in entities %}{{ imie.mark | upper}}&nbsp;{{ imie.model | upper }}{% endfor %}{% if app.user %}{% for imie in entities %}{% if app.user.id == user.id  %}   <a href="{{ path('edit_add',{ 'id_add':imie.id  }) }}"> &nbsp; ( edytuj informacje ){% endif%}{% endfor %}{% endif%}</a></b></h4></div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Marka</div>
+            <div class="panel-body">{% for imie in entities %}{{ imie.mark }}{% endfor %}</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Model</div>
+            <div class="panel-body">{% for imie in entities %}{{ imie.model }}{% endfor %}
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Cena</div>
+            <div class="panel-body">{% for imie in entities %}{{ imie.price }}{% endfor %}
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Pojemność</div>
+            <div class="panel-body">{% for imie in entities %}{{ imie.engine }}{% endfor %}
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Moc silnika</div>
+            <div class="panel-body">{% for imie in entities %}{{ imie.power }}{% endfor %} KM
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Rok produkcji</div>
+            <div class="panel-body">{% for imie in entities %}{{ imie.year }}{% endfor %}
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Typ silnika</div>
+            <div class="panel-body">{% for imie in entities %}{{ imie.enginetype }}{% endfor %}
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">Typ nadwozia</div>
+            <div class="panel-body">{% for imie in entities %}{{ imie.bodytype }}{% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

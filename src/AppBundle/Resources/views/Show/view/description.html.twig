@@ -1,0 +1,6 @@
+{% block contents %}
+    <div class="panel panel-info">
+        <div class="panel-heading">Opis</div>
+        <div class="panel-body">{% for imie in entities %}{{ imie.description }}{% endfor %}</div>
+    </div>
+{% endblock %}

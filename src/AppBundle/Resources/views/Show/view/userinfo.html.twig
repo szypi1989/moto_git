@@ -1,0 +1,23 @@
+{% block contents %}
+    <div class="panel panel-default col-sm-12">
+        <div class="panel-heading"><h4><b>Dane sprzedawcy:</b></h4></div>
+        <div class="col-sm-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">Pseudonim:</div>
+                <div class="panel-body">{{ user.username}}</div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">Numer telefonu:</div>
+                <div class="panel-body">{% if userinfo.phone_number is defined  %}{{ userinfo.phone_number}}{% else %}brak wypełnionych pól{% endif%}</div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">Adress zamieszkania:</div>
+                <div class="panel-body">{% if userinfo.address is defined  %}{{ userinfo.address}}{% else %}brak wypełnionych pól{% endif%}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
