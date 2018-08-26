@@ -40,9 +40,7 @@ class Advert {
     public function generateView() {
         $view = array('userinfo' => $this->useradvert->getUserInfo(),);
         $view["userinfo"] = $this->useradvert->getUserInfo();
-        // var_dump($this->getAdvert());
         $view["entities"] = $this->getAdvert()->carsdata;
-        $view["user"] = $this->useradvert->getUserAdd();
         ($this->getImg() != NULL) ? $view["gallery"] = $this->getImg() : NULL;
         return $view;
     }
