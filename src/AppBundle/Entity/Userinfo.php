@@ -1,10 +1,11 @@
 <?php
 
-namespace AppBundle\Entity;  
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
  * Userinfo
  *
@@ -12,8 +13,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserinfoRepository")
  * @UniqueEntity("id_user")
  */
-class Userinfo
-{
+class Userinfo {
+
     /**
      * @var int
      *
@@ -22,6 +23,12 @@ class Userinfo
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\OneToOne(targetEntity="User", mappedBy="Userinfo")
+     * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+     */
+    public $user;
 
     /**
      * @var string
@@ -36,7 +43,7 @@ class Userinfo
      * @ORM\Column(name="phone_number", type="integer")
      */
     private $phone_number;
-     
+
     /**
      * @var int
      *
@@ -49,8 +56,7 @@ class Userinfo
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -60,8 +66,7 @@ class Userinfo
      * @param string $address
      * @return Userinfo
      */
-    public function setAddress($address)
-    {
+    public function setAddress($address) {
         $this->address = $address;
 
         return $this;
@@ -72,8 +77,7 @@ class Userinfo
      *
      * @return string 
      */
-    public function getAddress()
-    {
+    public function getAddress() {
         return $this->address;
     }
 
@@ -83,8 +87,7 @@ class Userinfo
      * @param integer $phone_number
      * @return Userinfo
      */
-    public function setPhone_number($phone_number)
-    {
+    public function setPhone_number($phone_number) {
         $this->phone_number = $phone_number;
 
         return $this;
@@ -95,19 +98,17 @@ class Userinfo
      *
      * @return integer
      */
-    public function getPhone_number()
-    {
+    public function getPhone_number() {
         return $this->phone_number;
     }
-    
-     /**
+
+    /**
      * Set id_user
      *
      * @param integer $id_user
      * @return Userinfo
      */
-    public function setId_user($id_user)
-    {
+    public function setId_user($id_user) {
         $this->id_user = $id_user;
 
         return $this;
@@ -118,9 +119,17 @@ class Userinfo
      *
      * @return integer
      */
-    public function getId_user()
-    {
+    public function getId_user() {
         return $this->id_user;
+    }
+
+    /**
+     * Get user
+     *
+     * @return User
+     */
+    public function getUser() {
+        return $this->user;
     }
 
 }
