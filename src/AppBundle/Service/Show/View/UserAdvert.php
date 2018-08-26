@@ -45,10 +45,4 @@ class UserAdvert {
     public function getUserInfo() {
         return $this->entityManager->getRepository('AppBundle:Userinfo')->findOneBy((array('id_user' => $this->getId())));
     }
-    
-    // get user information
-    public function getUserAdd() {
-        return $this->entityManager->getRepository('AppBundle:User')->findOneBy((array('id' => $this->getId())));
-    }
-
 }
