@@ -11,7 +11,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\Search;
 use AppBundle\Service\Show\View\Advert;
-
+use AppBundle\Service\RequestControl;
+use AppBundle\Service\Show\View\UserAdvert;
+use AppBundle\Service\Show\View\ReqDataView;
+use Doctrine\ORM\EntityManager;
+use AppBundle\Service\Show\View\CarsInfo;
 class ShowController extends Controller {
 
     /**
@@ -43,7 +47,7 @@ class ShowController extends Controller {
      * @Route("/view/{page}", name="view", defaults={"page": "1"})
      * @Template()
      */
-    public function viewAction(Request $request, $page, Advert $advert) {
+    public function viewAction(Request $request, $page, Advert $advert,ReqDataView $reqdataview, UserAdvert $useradvert,RequestControl $requestcontrol,CarsInfo $carsinfo) {
         // using the $advert service to generate an advertisement view 
         return $advert->generateView();
     }
