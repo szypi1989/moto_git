@@ -4,18 +4,20 @@ namespace AppBundle\Service\Show\View;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
-use AppBundle\Service\Show\View\UserAdvert;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 // class builds an ad
 // the class uses the User Advert service to generate information
 class Advert {
 
-    protected $useradvert;
-    protected $requestStack;
-
-    public function __construct(RequestStack $requestStack, UserAdvert $useradvert) {
-        $this->useradvert = $useradvert;
-        $this->requestStack = $requestStack;
+    public $useradvert;
+    public $reqdataview;
+    public $container;
+    public $path_img="../web/images/";
+    public function __construct(ContainerInterface $container) {
+        $this->container=$container;
+        $this->reqdataview = $this->container->get(ReqDataView::Class);
+        $this->useradvert = $this->container->get(UserAdvert::Class);
     }
 
     // generate information from the UserAdvert service and return the packed object with information
@@ -25,14 +27,13 @@ class Advert {
 
     // retrieves pictures through the page identifier
     public function getImg() {
-        if (is_dir("../web/images/" . $this->requestStack->getCurrentRequest()->attributes->get('page'))) {
-            $dir = "../web/images/" . $this->requestStack->getCurrentRequest()->attributes->get('page');
+        if (is_dir($this->path_img . $this->reqdataview->data['page'])) {
+            $dir = $this->path_img . $this->reqdataview->data['page'];
             $imgcars = scandir($dir);
             $imgcars = array_slice($imgcars, 2);
         } else {
             $imgcars = NULL;
         }
-
         return $imgcars;
     }
 

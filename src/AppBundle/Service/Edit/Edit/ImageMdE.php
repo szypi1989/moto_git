@@ -6,19 +6,23 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Cars;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use AppBundle\Service\RequestControl as RequestControl;
+use AppBundle\Service\Edit\Edit\ReqDataEdit as ReqDataEdit;
 
 class ImageMdE {
 
-    private $requestStack;
-    protected $user_active;
     protected $id_add;
     public $errmove = array();
     public $files = array();
+    public $container;
+    public $requestcntrl;
+    public $path_img = "../web/images/";
+    public $reqdataedit;
 
-    public function __construct(RequestStack $requestStack, ContainerInterface $container) {
-        $this->requestStack = $requestStack;
-        $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
-        $this->id_add = $this->requestStack->getCurrentRequest()->attributes->get('id_add');
+    public function __construct(ContainerInterface $container) {
+        $this->container = $container;
+        $this->requestcntrl = $this->container->get(RequestControl::Class);
+        $this->reqdataedit = $this->container->get(ReqDataEdit::Class);
     }
 
     public function CreateImgMsg($id) {
@@ -29,9 +33,9 @@ class ImageMdE {
 
     //moves the main picture of the avatar according to id number of the advert added
     public function CreateAwatar($id) {
-        if (isset($this->requestStack->getCurrentRequest()->files->get('form')['avatar'])) {
+        if (isset($this->reqdataedit->data['avatar'])) {
             try {
-                rename($this->requestStack->getCurrentRequest()->files->get('form')['avatar']->getPathname(), "../web/images/" . $id . '.jpg');
+                rename($this->reqdataedit->data['avatar'], $this->path_img . $id . '.jpg');
             } catch (Exception $e) {
                 $this->errmove['upload']['fail'] = "nie można przenieść zdjęć na serwer !!!";
             }
@@ -42,19 +46,19 @@ class ImageMdE {
     //creates a folder for the selected photo id and takes photos there that were 
     //sort files after uploady photos
     public function CreateSortFilesImg($id) {
-        $files1=null;
-        if (isset($this->requestStack->getCurrentRequest()->files->get('form')['image'])) {
-            if (!is_dir("../web/images/" . $id)) {
-                if (mkdir("../web/images/" . $id, 777)) {
-                    chmod("../web/images/" . $id, 0777);
-                    $arr = $this->requestStack->getCurrentRequest()->files->get('form')['image'];
-                    $dir = "../web/images/" . $id;
+        $files1 = null;
+        if (isset($this->reqdataedit->data['image'])) {
+            if (!is_dir($this->path_img . $id)) {
+                if (mkdir($this->path_img . $id, 777)) {
+                    chmod($this->path_img . $id, 0777);
+                    $arr = $this->reqdataedit->data['image'];
+                    $dir = $this->path_img . $id;
                     $files1 = scandir($dir);
                     $files1 = array_slice($files1, 2);
                     foreach ($arr as $key => $value) {
                         try {
                             if (!empty($value)) {
-                                rename($value->getPathname(), "../web/images/" . $id . "/" . ($key + 1 + count($files1)) . '.jpg');
+                                rename($value, $this->path_img . $id . "/" . ($key + 1 + count($files1)) . '.jpg');
                             }
                         } catch (Exception $e) {
                             $this->errmove['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
@@ -64,22 +68,22 @@ class ImageMdE {
                     $this->errmove['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
                 }
             } else {
-                $dir = "../web/images/" . $id;
+                $dir = $this->path_img . $id;
                 $files1 = scandir($dir);
                 $files1 = array_slice($files1, 2);
-                $arr = $this->requestStack->getCurrentRequest()->files->get('form')['image'];
+                $arr = $this->reqdataedit->data['image'];
                 foreach ($arr as $key => $value) {
                     try {
                         if (!empty($value)) {
-                            rename($value->getPathname(), "../web/images/" . $id . "/" . ($key + 1 + count($files1)) . '.jpg');
+                            rename($value, $this->path_img . $id . "/" . ($key + 1 + count($files1)) . '.jpg');
                         }
                     } catch (Exception $e) {
                         $this->errmove['upload']['fail'] = 'nie można przenieść zdjęć na serwer !!!';
                     }
                 }
             }
-        }else{
-        $files1=$this->getNameImages();    
+        } else {
+            $files1 = $this->getNameImages();
         }
         $this->files = $files1;
         return $this;
@@ -87,8 +91,8 @@ class ImageMdE {
 
     public function getNameImages() {
         $files1 = NULL;
-        if (is_dir("../web/images/" . $this->id_add)) {
-            $dir = "../web/images/" . $this->id_add;
+        if (is_dir($this->path_img . $this->reqdataedit->data['id_add'])) {
+            $dir = $this->path_img . $this->reqdataedit->data['id_add'];
             $files1 = scandir($dir);
             $files1 = array_slice($files1, 2);
         }
@@ -97,20 +101,20 @@ class ImageMdE {
 
     // delete files by request data
     public function deleteImages() {
-        $files1=NULL;
-        if (isset($this->requestStack->getCurrentRequest()->request->get('form')['deleteimage'])) {
-            if (is_dir("../web/images/" . $this->id_add)) {
-                $arr = $this->requestStack->getCurrentRequest()->request->get('form')['deleteimage'];
+        $files1 = NULL;
+        if (isset($this->reqdataedit->data['deleteimage'])) {
+            if (is_dir($this->path_img . $this->reqdataedit->data['id_add'])) {
+                $arr = $this->reqdataedit->data['deleteimage'];
                 foreach ($arr as $key => $value) {
-                    unlink("../web/images/" . $this->id_add . "/" . $key . '.jpg');
+                    unlink($this->path_img . $this->reqdataedit->data['id_add'] . "/" . $key . '.jpg');
                 }
-                $dir = "../web/images/" . $this->id_add;
+                $dir = $this->path_img . $this->reqdataedit->data['id_add'];
                 $files1 = scandir($dir);
                 $files1 = array_slice($files1, 2);
                 foreach ($files1 as $key => $value) {
-                    rename("../web/images/" . $this->id_add . "/" . $value, "../web/images/" . $this->id_add . "/" . ($key + 1) . '.jpg');
+                    rename($this->path_img . $this->reqdataedit->data['id_add'] . "/" . $value, $this->path_img . $this->reqdataedit->data['id_add'] . "/" . ($key + 1) . '.jpg');
                 }
-                $dir = "../web/images/" . $this->id_add;
+                $dir = $this->path_img . $this->reqdataedit->data['id_add'];
                 $files1 = scandir($dir);
                 $files1 = array_slice($files1, 2);
             }
