@@ -5,6 +5,7 @@ namespace AppBundle\Service\Defaults\Index;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Service\Defaults\Index\FetchPaginer;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 // class for the generation of car ads
 // generates the results of advertisements according to the data from the request table
@@ -14,9 +15,11 @@ class PutAdvert {
     protected $qb;
     protected $pagination;
     private $requestStack;
+    public $container;
+    public $paginer;
 
-    public function __construct(EntityManager $em, RequestStack $requestStack, FetchPaginer $paginer) {
-        $this->paginer = $paginer;
+    public function __construct(Container $container) {
+        $this->container = $container;
     }
 
     public function getTransSort() {
@@ -50,6 +53,7 @@ class PutAdvert {
 
     // provide a paginer object, which is responsible for the generated results from the request table, which is associated with the object generating results from the database
     public function getPagination() {
+        $this->paginer = $this->container->get(FetchPaginer::Class);
         return $this->paginer->createPagination();
     }
 
