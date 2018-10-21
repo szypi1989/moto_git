@@ -419,24 +419,23 @@
     <service id="AppBundle\Service\AutoSynchronize" class="AppBundle\Service\AutoSynchronize" public="false" autowire="true" autoconfigure="true">
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
     </service>
-    <service id="AppBundle\Service\CarsEvent" class="AppBundle\Service\CarsEvent" public="false" autowire="true" autoconfigure="true"/>
+    <service id="AppBundle\Service\CarsEvent" class="AppBundle\Service\CarsEvent" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="autowired.AppBundle\Entity\Cars"/>
+    </service>
+    <service id="AppBundle\Service\Defaults\Index\CarCriteriaRequest" class="AppBundle\Service\Defaults\Index\CarCriteriaRequest" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="AppBundle\Service\RequestControl"/>
+    </service>
     <service id="AppBundle\Service\Defaults\Index\FetchMsgSql" class="AppBundle\Service\Defaults\Index\FetchMsgSql" public="false" autowire="true" autoconfigure="true">
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
-      <argument type="service" id="request_stack"/>
+      <argument type="service" id="service_container"/>
     </service>
     <service id="AppBundle\Service\Defaults\Index\FetchPaginer" class="AppBundle\Service\Defaults\Index\FetchPaginer" public="false" autowire="true" autoconfigure="true">
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
-      <argument type="service" id="request_stack"/>
       <argument type="service" id="service_container"/>
-      <argument type="service" id="AppBundle\Service\Defaults\Index\FetchMsgSql"/>
     </service>
     <service id="AppBundle\Service\Defaults\Index\PutAdvert" class="AppBundle\Service\Defaults\Index\PutAdvert" public="false" autowire="true" autoconfigure="true">
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
-      <argument type="service" id="request_stack"/>
-      <argument type="service" id="AppBundle\Service\Defaults\Index\FetchPaginer"/>
+      <argument type="service" id="service_container"/>
     </service>
     <service id="AppBundle\Service\Edit\Append\ImageMd" class="AppBundle\Service\Edit\Append\ImageMd" public="false" autowire="true" autoconfigure="true">
-      <argument type="service" id="request_stack"/>
+      <argument type="service" id="service_container"/>
     </service>
     <service id="AppBundle\Service\Edit\Append\PushSql" class="AppBundle\Service\Edit\Append\PushSql" public="false" autowire="true" autoconfigure="true">
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
@@ -444,8 +443,10 @@
       <argument type="service" id="service_container"/>
       <argument type="service" id="AppBundle\Service\Edit\Append\ImageMd"/>
     </service>
+    <service id="AppBundle\Service\Edit\Append\ReqDataAppend" class="AppBundle\Service\Edit\Append\ReqDataAppend" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="service_container"/>
+    </service>
     <service id="AppBundle\Service\Edit\Edit\ImageMdE" class="AppBundle\Service\Edit\Edit\ImageMdE" public="false" autowire="true" autoconfigure="true">
-      <argument type="service" id="request_stack"/>
       <argument type="service" id="service_container"/>
     </service>
     <service id="AppBundle\Service\Edit\Edit\PushSqlE" class="AppBundle\Service\Edit\Edit\PushSqlE" public="false" autowire="true" autoconfigure="true">
@@ -455,17 +456,23 @@
       <argument type="service" id="AppBundle\Service\Edit\Edit\ImageMdE"/>
       <argument type="service" id="AppBundle\Listener\Inf_add_advert"/>
     </service>
+    <service id="AppBundle\Service\Edit\Edit\ReqDataEdit" class="AppBundle\Service\Edit\Edit\ReqDataEdit" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="AppBundle\Service\RequestControl" class="AppBundle\Service\RequestControl" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="service_container"/>
+    </service>
     <service id="AppBundle\Service\Show\View\Advert" class="AppBundle\Service\Show\View\Advert" public="false" autowire="true" autoconfigure="true">
-      <argument type="service" id="request_stack"/>
-      <argument type="service" id="AppBundle\Service\Show\View\UserAdvert"/>
+      <argument type="service" id="service_container"/>
     </service>
     <service id="AppBundle\Service\Show\View\CarsInfo" class="AppBundle\Service\Show\View\CarsInfo" public="false" autowire="true" autoconfigure="true">
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
-      <argument type="service" id="request_stack"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="AppBundle\Service\Show\View\ReqDataView" class="AppBundle\Service\Show\View\ReqDataView" public="false" autowire="true" autoconfigure="true">
+      <argument type="service" id="service_container"/>
     </service>
     <service id="AppBundle\Service\Show\View\UserAdvert" class="AppBundle\Service\Show\View\UserAdvert" public="false" autowire="true" autoconfigure="true">
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
-      <argument type="service" id="AppBundle\Service\Show\View\CarsInfo"/>
+      <argument type="service" id="service_container"/>
     </service>
     <service id="AppBundle\Service\User\Profileinfo\ProfileSql" class="AppBundle\Service\User\Profileinfo\ProfileSql" public="false" autowire="true" autoconfigure="true">
       <argument type="service" id="doctrine.orm.default_entity_manager"/>
@@ -492,7 +499,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id="service_locator.94905444b986c0ee38d8176c49c05a7b"/>
+      <argument type="service" id="service_locator.9bd161cf743bed9da0197bd0263e1282"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -643,7 +650,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer" unlazy="1"/>
       <argument>KvJej86MX3</argument>
       <argument>0</argument>
-      <argument>QNHrg+b8oDV2B7nyVI5axf</argument>
+      <argument>Hj9flSKWS7D9QdyhuyZRpE</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -653,7 +660,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>oX3SMKoQqY</argument>
       <argument>0</argument>
-      <argument>QNHrg+b8oDV2B7nyVI5axf</argument>
+      <argument>Hj9flSKWS7D9QdyhuyZRpE</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -663,7 +670,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>BmzM66LJW9</argument>
       <argument>0</argument>
-      <argument>QNHrg+b8oDV2B7nyVI5axf</argument>
+      <argument>Hj9flSKWS7D9QdyhuyZRpE</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -673,7 +680,7 @@
       <tag name="cache.pool" clearer="cache.default_clearer"/>
       <argument>HGhZMBaGFm</argument>
       <argument>0</argument>
-      <argument>QNHrg+b8oDV2B7nyVI5axf</argument>
+      <argument>Hj9flSKWS7D9QdyhuyZRpE</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -683,7 +690,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>QNHrg+b8oDV2B7nyVI5axf</argument>
+      <argument>Hj9flSKWS7D9QdyhuyZRpE</argument>
       <argument>C:\xampp\htdocs\heroku\motoview_dev\var\cache\prod/pools</argument>
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
@@ -693,7 +700,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>QNHrg+b8oDV2B7nyVI5axf</argument>
+      <argument>Hj9flSKWS7D9QdyhuyZRpE</argument>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
@@ -2816,12 +2823,12 @@
     </service>
     <service id="security.authentication.listener.anonymous.main" class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
       <argument type="service" id="security.token_storage"/>
-      <argument>5b86a88e03fd29.31199673</argument>
+      <argument>5bcc4ae08c85e7.70987666</argument>
       <argument type="service" id="monolog.logger.security" on-invalid="null"/>
       <argument type="service" id="security.authentication.manager"/>
     </service>
     <service id="security.authentication.provider.anonymous.main" class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-      <argument>5b86a88e03fd29.31199673</argument>
+      <argument>5bcc4ae08c85e7.70987666</argument>
     </service>
     <service id="security.exception_listener.main" class="Symfony\Component\Security\Http\Firewall\ExceptionListener" public="false">
       <argument type="service" id="security.token_storage"/>
@@ -3920,32 +3927,42 @@
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
-    <service id="service_locator.d2905503cc2b9ad3946e78db82dce5e4" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.6d18091cf371fc0b9b0d4cdfcb2e2830" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="criteria" type="service" id="AppBundle\Service\Defaults\Index\CarCriteriaRequest" on-invalid="ignore"/>
         <argument key="em" type="service" id="doctrine.orm.default_entity_manager"/>
+        <argument key="fetchmsgsql" type="service" id="AppBundle\Service\Defaults\Index\FetchMsgSql" on-invalid="ignore"/>
+        <argument key="paginer" type="service" id="AppBundle\Service\Defaults\Index\FetchPaginer" on-invalid="ignore"/>
         <argument key="putadvert" type="service" id="AppBundle\Service\Defaults\Index\PutAdvert" on-invalid="ignore"/>
+        <argument key="requestcntrl" type="service" id="AppBundle\Service\RequestControl" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id="service_locator.1a0e152085e36558ed2b72505c646041" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.fdb98c21d05341cbd981d69cc196bab5" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="pushsql" type="service" id="AppBundle\Service\Edit\Append\PushSql" on-invalid="ignore"/>
+        <argument key="reqdataappend" type="service" id="AppBundle\Service\Edit\Append\ReqDataAppend" on-invalid="ignore"/>
         <argument key="validrequest" type="service" id="AppBundle\Service\ValidRequest" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id="service_locator.b97da6c6d3a32e4f80f990fe2a8baf05" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.e44e4efc0251af2705a2dbea4f199c8a" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="em" type="service" id="doctrine.orm.default_entity_manager"/>
         <argument key="pushsql" type="service" id="AppBundle\Service\Edit\Edit\PushSqlE" on-invalid="ignore"/>
+        <argument key="reqdataedit" type="service" id="AppBundle\Service\Edit\Edit\ReqDataEdit" on-invalid="ignore"/>
         <argument key="validrequest" type="service" id="AppBundle\Service\ValidRequest" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id="service_locator.348b76973bb379211fa5b01e2c8ea454" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.5d64cecaddaeac623d81ae46d43b1391" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="advert" type="service" id="AppBundle\Service\Show\View\Advert" on-invalid="ignore"/>
+        <argument key="carsinfo" type="service" id="AppBundle\Service\Show\View\CarsInfo" on-invalid="ignore"/>
+        <argument key="reqdataview" type="service" id="AppBundle\Service\Show\View\ReqDataView" on-invalid="ignore"/>
+        <argument key="requestcontrol" type="service" id="AppBundle\Service\RequestControl" on-invalid="ignore"/>
+        <argument key="useradvert" type="service" id="AppBundle\Service\Show\View\UserAdvert" on-invalid="ignore"/>
       </argument>
     </service>
     <service id="service_locator.f4e17979d37c0ebca9b315b578dd1540" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
@@ -3958,18 +3975,18 @@
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
-    <service id="service_locator.94905444b986c0ee38d8176c49c05a7b" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.9bd161cf743bed9da0197bd0263e1282" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="AppBundle\Controller\DefaultController:indexAction" type="service" id="service_locator.d2905503cc2b9ad3946e78db82dce5e4"/>
-        <argument key="AppBundle\Controller\EditController:appendAction" type="service" id="service_locator.1a0e152085e36558ed2b72505c646041"/>
-        <argument key="AppBundle\Controller\EditController:editaddAction" type="service" id="service_locator.b97da6c6d3a32e4f80f990fe2a8baf05"/>
-        <argument key="AppBundle\Controller\ShowController:viewAction" type="service" id="service_locator.348b76973bb379211fa5b01e2c8ea454"/>
+        <argument key="AppBundle\Controller\DefaultController:indexAction" type="service" id="service_locator.6d18091cf371fc0b9b0d4cdfcb2e2830"/>
+        <argument key="AppBundle\Controller\EditController:appendAction" type="service" id="service_locator.fdb98c21d05341cbd981d69cc196bab5"/>
+        <argument key="AppBundle\Controller\EditController:editaddAction" type="service" id="service_locator.e44e4efc0251af2705a2dbea4f199c8a"/>
+        <argument key="AppBundle\Controller\ShowController:viewAction" type="service" id="service_locator.5d64cecaddaeac623d81ae46d43b1391"/>
         <argument key="AppBundle\Controller\UserController:profileinfoAction" type="service" id="service_locator.f4e17979d37c0ebca9b315b578dd1540"/>
-        <argument key="AppBundle\Controller\DefaultController::indexAction" type="service" id="service_locator.d2905503cc2b9ad3946e78db82dce5e4"/>
-        <argument key="AppBundle\Controller\EditController::appendAction" type="service" id="service_locator.1a0e152085e36558ed2b72505c646041"/>
-        <argument key="AppBundle\Controller\EditController::editaddAction" type="service" id="service_locator.b97da6c6d3a32e4f80f990fe2a8baf05"/>
-        <argument key="AppBundle\Controller\ShowController::viewAction" type="service" id="service_locator.348b76973bb379211fa5b01e2c8ea454"/>
+        <argument key="AppBundle\Controller\DefaultController::indexAction" type="service" id="service_locator.6d18091cf371fc0b9b0d4cdfcb2e2830"/>
+        <argument key="AppBundle\Controller\EditController::appendAction" type="service" id="service_locator.fdb98c21d05341cbd981d69cc196bab5"/>
+        <argument key="AppBundle\Controller\EditController::editaddAction" type="service" id="service_locator.e44e4efc0251af2705a2dbea4f199c8a"/>
+        <argument key="AppBundle\Controller\ShowController::viewAction" type="service" id="service_locator.5d64cecaddaeac623d81ae46d43b1391"/>
         <argument key="AppBundle\Controller\UserController::profileinfoAction" type="service" id="service_locator.f4e17979d37c0ebca9b315b578dd1540"/>
       </argument>
     </service>
@@ -4133,6 +4150,7 @@
         <argument key="twig" type="service" id="twig"/>
       </argument>
     </service>
+    <service id="autowired.AppBundle\Entity\Cars" class="AppBundle\Entity\Cars" public="false" autowire="true"/>
     <service id="autowired.AppBundle\Entity\Userinfo" class="AppBundle\Entity\Userinfo" public="false" autowire="true"/>
     <service id="service_locator.39e66930232432ca5ba91e98fdd8a17b" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>

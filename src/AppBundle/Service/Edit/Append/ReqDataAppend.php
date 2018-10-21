@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Service\Edit\Edit;
+namespace AppBundle\Service\Edit\Append;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Service\RequestControl as RequestControl;
 
-class ReqDataEdit {
+class ReqDataAppend {
 
     public $data;
     public $container;
@@ -24,10 +24,6 @@ class ReqDataEdit {
     public function prepareDataRequest() {
         $req_work['POST'] = $this->requestcntrl->isRequestPost();
         $req_work['GET'] = $this->requestcntrl->isRequestGet();
-        if (null !== $this->requestcntrl->requeststack->getCurrentRequest()->attributes->get('id_add')) {
-            $this->data['id_add'] = $this->requestcntrl->requeststack->getCurrentRequest()->attributes->get('id_add');
-        }
-
         if ($req_work['POST']) {
             if (isset($this->requestcntrl->requeststack->getCurrentRequest()->files->get('form')['avatar'])) {
                 $this->data['avatar'] = $this->requestcntrl->requeststack->getCurrentRequest()->files->get('form')['avatar']->getPathname();
@@ -36,12 +32,6 @@ class ReqDataEdit {
                 $image_arr = $this->requestcntrl->requeststack->getCurrentRequest()->files->get('form')['image'];
                 foreach ($image_arr as $key => $value) {
                     $this->data['image'][$key] = $value;
-                }
-            }
-            $required_data = array(0 => 'deleteimage');
-            foreach ($required_data as $key => $value) {
-                if (isset($this->requestcntrl->requeststack->getCurrentRequest()->request->get('form')[$value])) {
-                    $this->data[$value] = $this->requestcntrl->requeststack->getCurrentRequest()->request->get('form')[$value];
                 }
             }
         }

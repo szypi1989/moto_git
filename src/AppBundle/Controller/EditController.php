@@ -17,13 +17,14 @@ use AppBundle\Form\Type\EditType;
 use AppBundle\Service\Edit\Append\PushSql;
 use AppBundle\Service\Edit\Edit\PushSqlE;
 use AppBundle\Service\Edit\Edit\ReqDataEdit;
+use AppBundle\Service\Edit\Append\ReqDataAppend;
 class EditController extends Controller {
 
     /**
      * @Route("/append", name="append")
      * @Template()
      */
-    public function appendAction(Request $request, ValidRequest $validrequest, PushSql $pushsql) {
+    public function appendAction(Request $request, ValidRequest $validrequest, PushSql $pushsql,ReqDataAppend $reqdataappend) {
         //<building information to create a form
         //downloading the logged-in user
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
