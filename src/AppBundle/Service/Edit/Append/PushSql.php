@@ -37,7 +37,6 @@ class PushSql {
         $cars->setEnginetype($this->reqdataappend->data['enginetype']);
         $cars->setYear($this->reqdataappend->data['year']);
         $cars->setBodytype($this->reqdataappend->data['bodytype']);
-        $cars->setYear($this->reqdataappend->data['year']);
         $cars->setDescription($this->reqdataappend->data['description']);
         $cars->setId_user($this->user_active->getId());
         $this->entityManager->persist($cars);

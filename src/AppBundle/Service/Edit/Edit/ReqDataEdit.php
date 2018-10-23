@@ -44,6 +44,11 @@ class ReqDataEdit {
                     $this->data[$value] = $this->requestcntrl->requeststack->getCurrentRequest()->request->get('form')[$value];
                 }
             }
+            $required_data = array(0 => 'model', 1 => 'mark', 2 => 'price',
+                3 => 'power', 4 => 'enginea', 5 => 'engineb', 6 => 'enginetype', 7 => 'year', 8 => 'bodytype', 9 => 'description');
+            foreach ($required_data as $key => $value) {
+                $this->data[$value] = $this->requestcntrl->requeststack->getCurrentRequest()->request->get('form')[$value];
+            }
         }
     }
 

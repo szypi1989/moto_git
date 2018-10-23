@@ -37,16 +37,15 @@ class PushSqlE {
         $cars = $this->entityManager->getRepository('AppBundle:Cars')->findOneBy(array('id' => $this->id_add));
         if ($cars) {
             try {
-                $cars->setModel($this->requestStack->getCurrentRequest()->request->get('form')['model']);
-                $cars->setMark($this->requestStack->getCurrentRequest()->request->get('form')['mark']);
-                $cars->setPrice((integer) $this->requestStack->getCurrentRequest()->request->get('form')['price']);
-                $cars->setPower((integer) $this->requestStack->getCurrentRequest()->request->get('form')['power']);
-                $cars->setEngine($this->requestStack->getCurrentRequest()->request->get('form')['enginea'] . "." . $this->requestStack->getCurrentRequest()->request->get('form')['engineb']);
-                $cars->setEnginetype($this->requestStack->getCurrentRequest()->request->get('form')['enginetype']);
-                $cars->setYear($this->requestStack->getCurrentRequest()->request->get('form')['year']);
-                $cars->setBodytype($this->requestStack->getCurrentRequest()->request->get('form')['bodytype']);
-                $cars->setYear($this->requestStack->getCurrentRequest()->request->get('form')['year']);
-                $cars->setDescription($this->requestStack->getCurrentRequest()->request->get('form')['description']);
+                $cars->setModel($this->reqdataappend->data['model']);
+                $cars->setMark($this->reqdataappend->data['mark']);
+                $cars->setPrice((integer)$this->reqdataappend->data['price']);
+                $cars->setPower((integer)$this->reqdataappend->data['power']);
+                $cars->setEngine($this->reqdataappend->data['enginea'] . "." . $this->reqdataappend->data['engineb']);
+                $cars->setEnginetype($this->reqdataappend->data['enginetype']);
+                $cars->setYear($this->reqdataappend->data['year']);
+                $cars->setBodytype($this->reqdataappend->data['bodytype']);
+                $cars->setDescription($this->reqdataappend->data['description']);
                 $cars->setId_user($this->user_active->getId());
                 $this->entityManager->persist($cars);
                 $this->entityManager->flush();
