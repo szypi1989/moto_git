@@ -6,37 +6,39 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Cars;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use AppBundle\Service\Edit\Append\ImageMd;
 
+//use AppBundle\Service\Edit\Append\ImageMd;
 // class creates actions that add an advertisement to the database
 class PushSql {
 
-    protected $entityManager;
-    private $requestStack;
-    protected $user_active;
-    protected $imagemd;
+    public $entityManager;
+    public $user_active;
+    public $imagemd;
+    public $container;
+    public $reqdataappend;
 
-    public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container, ImageMd $imagemd) {
-        $this->entityManager = $em;
-        $this->requestStack = $requestStack;
+    public function __construct(ContainerInterface $container, ImageMd $imagemd) {
+        $this->container = $container;
+        $this->entityManager = $this->container->get('doctrine.orm.entity_manager');
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
-        $this->imagemd = $imagemd;
+        $this->imagemd = $this->container->get(ImageMd::Class);
+        $this->reqdataappend = $this->container->get(ReqDataAppend::Class);
     }
 
     // create actions from the request data that causes adding the announcement from dathch to the database
     // use the imagmd class to create car photo files and verify them
     public function pushCars() {
         $cars = new Cars();
-        $cars->setModel($this->requestStack->getCurrentRequest()->request->get('form')['model']);
-        $cars->setMark($this->requestStack->getCurrentRequest()->request->get('form')['mark']);
-        $cars->setPrice((integer) $this->requestStack->getCurrentRequest()->request->get('form')['price']);
-        $cars->setPower((integer) $this->requestStack->getCurrentRequest()->request->get('form')['power']);
-        $cars->setEngine($this->requestStack->getCurrentRequest()->request->get('form')['enginea'] . "." . $this->requestStack->getCurrentRequest()->request->get('form')['engineb']);
-        $cars->setEnginetype($this->requestStack->getCurrentRequest()->request->get('form')['enginetype']);
-        $cars->setYear($this->requestStack->getCurrentRequest()->request->get('form')['year']);
-        $cars->setBodytype($this->requestStack->getCurrentRequest()->request->get('form')['bodytype']);
-        $cars->setYear($this->requestStack->getCurrentRequest()->request->get('form')['year']);
-        $cars->setDescription($this->requestStack->getCurrentRequest()->request->get('form')['description']);
+        $cars->setModel($this->reqdataappend->data['model']);
+        $cars->setMark($this->reqdataappend->data['mark']);
+        $cars->setPrice($this->reqdataappend->data['price']);
+        $cars->setPower((integer) $this->reqdataappend->data['power']);
+        $cars->setEngine($this->reqdataappend->data['enginea'] . "." . $this->reqdataappend->data['engineb']);
+        $cars->setEnginetype($this->reqdataappend->data['enginetype']);
+        $cars->setYear($this->reqdataappend->data['year']);
+        $cars->setBodytype($this->reqdataappend->data['bodytype']);
+        $cars->setYear($this->reqdataappend->data['year']);
+        $cars->setDescription($this->reqdataappend->data['description']);
         $cars->setId_user($this->user_active->getId());
         $this->entityManager->persist($cars);
         try {
@@ -49,7 +51,7 @@ class PushSql {
         return $cars;
     }
 
-   // gets the object responsible for uploading photos
+    // gets the object responsible for uploading photos
     public function getImagemd() {
         return $this->imagemd;
     }

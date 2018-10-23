@@ -4,11 +4,8 @@ namespace AppBundle\Service\Edit\Append;
 
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Cars;
-//use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use AppBundle\Service\RequestControl as RequestControl;
-//use AppBundle\Service\Edit\Append\ReqDataAppend as ReqDataAppend;
-
+use AppBundle\Service\RequestControl;
 //class used for photo upload
 class ImageMd {
 

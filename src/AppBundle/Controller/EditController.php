@@ -18,6 +18,8 @@ use AppBundle\Service\Edit\Append\PushSql;
 use AppBundle\Service\Edit\Edit\PushSqlE;
 use AppBundle\Service\Edit\Edit\ReqDataEdit;
 use AppBundle\Service\Edit\Append\ReqDataAppend;
+use AppBundle\Service\Edit\Append\ImageMd;
+//use AppBundle\Service\RequestControl;
 class EditController extends Controller {
 
     /**
@@ -67,7 +69,7 @@ class EditController extends Controller {
      * @Route("/editadd/{id_add}", name="edit_add")
      * @Template()
      */
-    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, EntityManager $em, PushSqlE $pushsql,ReqDataEdit $reqdataedit) {
+    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, EntityManager $em, PushSqlE $pushsql,ReqDataEdit $reqdataedit,ImageMd $imagemd) {
         //action action very similar to controller action {appendAction}
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
