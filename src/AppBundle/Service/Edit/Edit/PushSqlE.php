@@ -8,27 +8,30 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
-use AppBundle\Service\Edit\Edit\ImageMdE;
 use AppBundle\Listener\Inf_add_advert;
 use AppBundle\Service\CarsEvent;
 
 class PushSqlE {
 
-    protected $entityManager;
-    private $requestStack;
-    protected $user_active;
-    protected $imagemd;
-    protected $id_add;
-    protected $infaddadvert;
+    public $entityManager;
+    public $user_active;
+    public $imagemd;
+    public $id_add;
+    public $infaddadvert;
+    public $reqdataedit;
 
-    //Inf_add_advert = object listener event that sends an email confirming the update of the advertisement
-    public function __construct(EntityManager $em, RequestStack $requestStack, ContainerInterface $container, ImageMdE $imagemd, Inf_add_advert $inf_add_advert) {
-        $this->entityManager = $em;
-        $this->requestStack = $requestStack;
+    // Inf_add_advert = object listener event that sends an email confirming the update of the advertisement
+    // imagemd = management object uploaded
+    // reqdataedit = managment object request
+    
+    public function __construct(ContainerInterface $container) {
+        $this->container = $container;
+        $this->entityManager = $this->container->get('doctrine.orm.entity_manager');
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();
-        $this->imagemd = $imagemd;
-        $this->id_add = $this->requestStack->getCurrentRequest()->attributes->get('id_add');
-        $this->infaddadvert = $inf_add_advert;
+        $this->imagemd = $this->container->get(ImageMdE::Class);
+        $this->reqdataedit = $this->container->get(ReqDataEdit::Class);
+        $this->infaddadvert = $this->container->get(Inf_add_advert::Class);
+        $this->id_add = $this->reqdataedit->data['id_add'];
     }
 
     // create actions from the request data that causes adding the announcement from dathch to the database
@@ -37,15 +40,15 @@ class PushSqlE {
         $cars = $this->entityManager->getRepository('AppBundle:Cars')->findOneBy(array('id' => $this->id_add));
         if ($cars) {
             try {
-                $cars->setModel($this->reqdataappend->data['model']);
-                $cars->setMark($this->reqdataappend->data['mark']);
-                $cars->setPrice((integer)$this->reqdataappend->data['price']);
-                $cars->setPower((integer)$this->reqdataappend->data['power']);
-                $cars->setEngine($this->reqdataappend->data['enginea'] . "." . $this->reqdataappend->data['engineb']);
-                $cars->setEnginetype($this->reqdataappend->data['enginetype']);
-                $cars->setYear($this->reqdataappend->data['year']);
-                $cars->setBodytype($this->reqdataappend->data['bodytype']);
-                $cars->setDescription($this->reqdataappend->data['description']);
+                $cars->setModel($this->reqdataedit->data['model']);
+                $cars->setMark($this->reqdataedit->data['mark']);
+                $cars->setPrice((integer) $this->reqdataedit->data['price']);
+                $cars->setPower((integer) $this->reqdataedit->data['power']);
+                $cars->setEngine($this->reqdataedit->data['enginea'] . "." . $this->reqdataedit->data['engineb']);
+                $cars->setEnginetype($this->reqdataedit->data['enginetype']);
+                $cars->setYear($this->reqdataedit->data['year']);
+                $cars->setBodytype($this->reqdataedit->data['bodytype']);
+                $cars->setDescription($this->reqdataedit->data['description']);
                 $cars->setId_user($this->user_active->getId());
                 $this->entityManager->persist($cars);
                 $this->entityManager->flush();

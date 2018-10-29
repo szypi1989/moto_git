@@ -1,17 +1,15 @@
 <?php
 
 namespace AppBundle\Service\Edit\Append;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Service\RequestControl as RequestControl;
-
+// class managing data from the $ _REQUEST array
 class ReqDataAppend {
 
     public $data;
     public $container;
     public $req_work = false;
     public $requestcntrl;
-    public $auto_data = true;
 
     public function __construct(ContainerInterface $container) {
         $this->container = $container;

@@ -5,14 +5,13 @@ namespace AppBundle\Service\Edit\Append;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Cars;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use AppBundle\Service\RequestControl;
-//class used for photo upload
+
+// management object uploaded
+
 class ImageMd {
 
-   // public $requestStack;
     protected $user_active;
     public $errmove = array();
-    public $files = array();
     public $container;
     public $path_img = "../web/images/";
     public $reqdataappend;

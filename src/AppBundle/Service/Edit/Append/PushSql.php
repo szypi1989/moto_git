@@ -6,8 +6,6 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Cars;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
-//use AppBundle\Service\Edit\Append\ImageMd;
 // class creates actions that add an advertisement to the database
 class PushSql {
 
@@ -17,7 +15,11 @@ class PushSql {
     public $container;
     public $reqdataappend;
 
-    public function __construct(ContainerInterface $container, ImageMd $imagemd) {
+    // Inf_add_advert = object listener event that sends an email confirming the update of the advertisement
+    // imagemd = management object uploaded
+    // reqdataappend = managment object request
+
+    public function __construct(ContainerInterface $container) {
         $this->container = $container;
         $this->entityManager = $this->container->get('doctrine.orm.entity_manager');
         $this->user_active = $container->get('security.token_storage')->getToken()->getUser();

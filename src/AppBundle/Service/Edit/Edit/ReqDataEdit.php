@@ -1,10 +1,8 @@
 <?php
-
 namespace AppBundle\Service\Edit\Edit;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Service\RequestControl as RequestControl;
-
+// class managing data from the $ _REQUEST array
 class ReqDataEdit {
 
     public $data;

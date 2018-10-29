@@ -19,14 +19,16 @@ use AppBundle\Service\Edit\Edit\PushSqlE;
 use AppBundle\Service\Edit\Edit\ReqDataEdit;
 use AppBundle\Service\Edit\Append\ReqDataAppend;
 use AppBundle\Service\Edit\Append\ImageMd;
-//use AppBundle\Service\RequestControl;
+use AppBundle\Service\Edit\Edit\ImageMdE;
+use AppBundle\Listener\Inf_add_advert;
+
 class EditController extends Controller {
 
     /**
      * @Route("/append", name="append")
      * @Template()
      */
-    public function appendAction(Request $request, ValidRequest $validrequest, PushSql $pushsql,ReqDataAppend $reqdataappend) {
+    public function appendAction(Request $request, ValidRequest $validrequest, PushSql $pushsql,ReqDataAppend $reqdataappend,ImageMd $imagemd) {
         //<building information to create a form
         //downloading the logged-in user
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
@@ -69,7 +71,7 @@ class EditController extends Controller {
      * @Route("/editadd/{id_add}", name="edit_add")
      * @Template()
      */
-    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, EntityManager $em, PushSqlE $pushsql,ReqDataEdit $reqdataedit,ImageMd $imagemd) {
+    public function editaddAction(Request $request, $id_add, ValidRequest $validrequest, EntityManager $em, PushSqlE $pushsql,ReqDataEdit $reqdataedit,ImageMdE $imagemde,Inf_add_advert $infaddadvert) {
         //action action very similar to controller action {appendAction}
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {

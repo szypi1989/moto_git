@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use AppBundle\Service\RequestControl as RequestControl;
 use AppBundle\Service\Edit\Edit\ReqDataEdit as ReqDataEdit;
 
+// management object uploaded
+
 class ImageMdE {
 
     protected $id_add;

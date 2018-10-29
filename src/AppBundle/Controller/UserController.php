@@ -10,13 +10,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\Profileinfo;
 use AppBundle\Service\User\Profileinfo\ProfileSql;
 use AppBundle\Form\Type\ProfileType;
-
+use AppBundle\Service\User\Profileinfo\ReqDataProfile;
 class UserController extends Controller {
     /**
      * @Route("/editinfo/{user}", name="edit_info")
      * @Template()
      */
-    public function profileinfoAction(Request $request, $user, ProfileSql $profilesql) {
+    public function profileinfoAction(Request $request, $user, ProfileSql $profilesql,ReqDataProfile $reqdataprofile) {
         // downloading the logged-in user
         $user_active = $this->get('security.token_storage')->getToken()->getUser();
         // perform actions only when accessing the editing capabilities
